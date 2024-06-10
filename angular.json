@@ -14,7 +14,8 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": [
-              "lodash"
+              "lodash",
+              "sweetalert2"
             ],
             "outputPath": "dist/dest-front",
             "index": "src/index.html",
