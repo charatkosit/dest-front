@@ -9,6 +9,7 @@ import { MenuComponent } from './components/menu/menu.component';
 import { ContentComponent } from './components/content/content.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { VisitorsModule } from './modules/visitors/visitors.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // import { DataTablesModule } from 'angular-datatables';
 
 
@@ -30,7 +31,8 @@ import { VisitorsModule } from './modules/visitors/visitors.module';
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

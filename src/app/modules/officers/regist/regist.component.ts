@@ -61,7 +61,7 @@ isChecked(floor: number): boolean {
       }
     );
     // console.log(JSON.stringify(this.user))
-    this.generalService.onAlert();
+    this.generalService.onAlertSave();
   }
 
   resetForm() {

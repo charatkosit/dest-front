@@ -22,21 +22,21 @@ export class OfficerService {
     return this.http.get<any>('/api/officers/count')
   }
 
-  delete(id: number) {
-    // กำหนด URL ที่คุณต้องการส่งคำขอ DELETE
-    const url = 'api/officers/' + id;
-
-    // สร้างคำขอ DELETE ไปยัง URL
-    fetch(url, {
-      method: 'DELETE',
-    })
-      .then(response => response.json()) // แปลงคำตอบเป็น JSON
-      .then(data => {
-        console.log('Success:', data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-
+ 
+  // update(id: number, data: any): Observable<any> {
+  //   const url = `${this.apiUrl}/${id}`;
+  //   return this.http.put(url, data);
+  // }
+  
+  update(id: number, data: any): Observable<any> {
+    const url = `${this.apiUrl}/editOfficer/${id}`;
+    return this.http.patch(url, data);
   }
+
+  delete(id: number): Observable<any> {
+    const url = `${this.apiUrl}/${id}`;
+    return this.http.delete(url);
+  }
+
+
 }

@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { OfficerService } from 'src/app/services/officer.service';
+import { OfficeEditComponent } from '../office-edit/office-edit.component';
+import { EditData } from 'src/app/interfaces/EditData';
+import { GeneralsService } from 'src/app/services/generals.service';
 declare var $: any;
 
 @Component({
@@ -10,8 +14,23 @@ declare var $: any;
 })
 export class OfficerListComponent implements OnInit {
   data: any[] = [];
+
+  // สร้างตัวแปร editData เอาไว้รับข้อมูลที่แก้ไขแล้ว ที่ส่งมาจาก modal
+  editData = {
+    id: 0,
+    firstName: '',
+    lastName: '',
+    phone: '',
+    callAttribute: '',
+    idOfficer: '',
+    employeeId: '',
+    token: '',
+    multiSelectFloor: ''
+  };
   constructor(
     private officerService: OfficerService,
+    private general: GeneralsService,
+    private modalService: NgbModal,
     private router: Router,) { }
 
   ngOnInit(): void {
@@ -49,53 +68,79 @@ export class OfficerListComponent implements OnInit {
               className: 'text-center',
               data: null,
               render: function (data: any, type: any, row: any) {
-                // console.log(`tax is ${row.FullTaxNumber}`);
-                // return '<button class="btn btn-warning btn-edit" data-id="' + row.id + '" data-docduedate="' + row.DocDueDate + '">แก้ไข</button>';
-                // return '<button class="btn btn-info btn-edit" data-id="'+ row.id + '">แก้ไข </button> <button class="btn btn-danger btn-delete" data-id="'+ row.id + '">ลบ</button>';
-                return `<button class="btn btn-info btn-edit" data-id="${row.id}">แก้ไข</button> <button class="btn btn-danger btn-delete" data-id="${row.id}">ลบ</button>`;
-                // return `<div class="button-container">
-                //            <button class="btn btn-info btn-edit" data-id="${row.id}">แก้ไข</button>
-                //            <button class="btn btn-danger btn-delete" data-id="${row.id}">ลบ</button>
-                //         </div>`;
-
-
+                return `<button class="btn btn-info btn-edit" data-id="${row.id}">แก้ไข</button>
+                 <button class="btn btn-danger btn-delete" data-id="${row.id}">ลบ</button>`;
               }
             },
-            // {
-            //   title: 'ลบ',
-            //   className: 'text-center',
-            //   data: null,
-            //   render: function (data: any, type: any, row: any) {
-            //     // console.log(`tax is ${row.FullTaxNumber}`);
-            //     // return '<button class="btn btn-danger btn-delete" data-id="' + row.id + '" data-docduedate="' + row.DocDueDate + '">ลบ</button>';
-            //     return '<button class="btn btn-danger btn-delete" data-id="'+ row.id + '">ลบ</button>';
-            //   }
-            // },
           ]
         });
 
+
         $(document).on('click', '.btn-edit', () => {
+          var editData = table.row($(event?.target).parents('tr')).data();
           var id = $(event?.target).data('id');
 
-          // this.share.taxNumber = fullTaxNumber;
-          // this.share.docDueDate = docduedate;
-          console.log(`when edit click: ${id}`);
-          // this.log.logEvent(`Button Clicked: invoice-list/รายละเอียด/${fullTaxNumber}`)
-          // this.router.navigate(['/invoice-details'])
+          console.log(`when edit click: ${id} ,${JSON.stringify(editData)}`);
+          this.onEdit(editData);
+
         });
 
         $(document).on('click', '.btn-delete', () => {
           var id = $(event?.target).data('id');
           console.log(`when delete click: ${id}`);
-      
-          this.officerService.delete(id);
-          this.officerService.getData().subscribe(data => { this.data = data })
-
-
+          this.onDelete(id);
         });
+
+
       });
     })
   }
+
+  onEdit(editData: EditData): void {
+    console.log(`onEdit: ${JSON.stringify(editData)}`);
+    // Add your logic for the edit action here
+    const modalRef = this.modalService.open(OfficeEditComponent);
+    modalRef.componentInstance.editData = { ...editData }
+
+    //รับข้อมูลจาก modal ที่แก้ไขแล้ว ด้วยคำสั่ง this.modal.close(this.editData);
+    modalRef.result.then((result) => {
+      if (result !== undefined) {
+        this.editData = result;
+        this.officerService.update(this.editData.id, this.editData).subscribe({
+          next: () => {
+            // Successfully deleted the officer, now update the table
+            const table = $('#example1').DataTable();
+            table.row((idx: any, data: any, node: any) => data.id === this.editData.id).data(this.editData).draw();
+            this.general.onAlertUpdate();
+          },
+          error: (error) => { console.error('Error:', error); }
+        });
+
+      }
+    }, (reason) => {
+      console.log('Dismissed');
+    });
+  }
+
+
+
+  onDelete(id: number): void {
+    console.log(`onDelete: ${id}`);
+    // Add your logic for the delete action here
+    console.log(`onDelete: ${id}`);
+    this.officerService.delete(id).subscribe({
+      next: () => {
+        // Successfully deleted the officer, now update the table
+        const table = $('#example1').DataTable();
+        table.rows((idx: any, data: any, node: any) => data.id === id).remove().draw();
+        this.general.onAlertDelete();
+      },
+      error: (error) => {
+        console.error('Error:', error);
+      }
+    });
+  }
+
 
   deleteOfficer(id: number) {
     this.officerService.delete(id);

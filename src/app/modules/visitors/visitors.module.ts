@@ -4,7 +4,8 @@ import { RegisterComponent } from './register/register.component';
 import { FormsModule } from '@angular/forms';
 import { VisitorsRoutingModule } from './visitors-routing.module';
 import { VisitorListComponent } from './visitor-list/visitor-list.component';
-import { RegistComponent } from './regist/regist.component';
+import { WebsocketService } from 'src/app/services/websocket.service';
+
 
 
 
@@ -13,12 +14,12 @@ import { RegistComponent } from './regist/regist.component';
   declarations: [
     RegisterComponent,
     VisitorListComponent,
-    RegistComponent
   ],
   imports: [
     FormsModule,
     CommonModule,
     VisitorsRoutingModule,
-  ]
+  ],
+  providers: [WebsocketService]
 })
 export class VisitorsModule { }

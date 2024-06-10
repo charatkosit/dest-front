@@ -30,7 +30,7 @@ export class GeneralsService {
 
 
 
-  onAlert() {
+  onAlertSave() {
     $(function () {
       var Toast = Swal.mixin({
         toast: true,
@@ -41,6 +41,36 @@ export class GeneralsService {
       Toast.fire({
         icon: 'success',
         title: 'บันทึกสำเร็จ'
+      });
+    });
+  }
+
+  onAlertDelete() {
+    $(function () {
+      var Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000
+      });
+      Toast.fire({
+        icon: 'success',
+        title: 'ลบสำเร็จ'
+      });
+    });
+  }
+
+  onAlertUpdate(){
+    $(function () {
+      var Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2000
+      });
+      Toast.fire({
+        icon: 'success',
+        title: 'แก้ไขสำเร็จ'
       });
     });
   }

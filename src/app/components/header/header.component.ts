@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
+
+  user_name ='';
+  user_code ='';
+  permission ='';
+  isSecondLogin = false;
+
+
   constructor() { }
 
   ngOnInit(): void {
   }
-
+onClickSignOut(){}
+onClickLockOut(){}
 }
