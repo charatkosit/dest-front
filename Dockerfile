@@ -1,6 +1,6 @@
 ### STAGE 1:BUILD ###
 # สร้าง node  
-FROM node:18.18.0-alpine AS builder
+FROM node:18.20.2-alpine AS builder
 # Create a Virtual directory inside the docker image
 
 # SET Timezone (Asia/Bangkok GTM+07:00)
