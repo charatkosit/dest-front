@@ -57,12 +57,12 @@ export class OfficerListComponent implements OnInit {
           stateSave: true,
           data: this.data,
           columns: [
-            { data: 'firstName', title: 'ชื่อ', className: "text-center" },
-            { data: 'lastName', title: 'นามสกุล', className: "text-center" },
-            { data: 'phone', title: 'โทรศัพท์', className: "text-center" },
-            { data: 'idOfficer', title: 'บัตรพนักงาน', className: "text-center" },
-            { data: 'token', title: 'หมายเลขบัตรอนุญาต', className: "text-center" },
-            { data: 'multiSelectFloor', title: 'ติดต่อชั้น', className: "text-center" },
+            { data: 'firstName', title: 'ชื่อ', className: "left-center" },
+            { data: 'lastName', title: 'นามสกุล', className: "left-center" },
+            { data: 'phone', title: 'โทรศัพท์', className: "left-center" },
+            { data: 'idOfficer', title: 'บัตรพนักงาน', className: "left-center" },
+            { data: 'token', title: 'หมายเลขบัตรอนุญาต', className: "left-center" },
+            { data: 'multiSelectFloor', title: 'ติดต่อชั้น', className: "left-center" },
             {
               title: 'แก้ไข',
               className: 'text-center',
