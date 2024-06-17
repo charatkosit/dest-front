@@ -12,14 +12,14 @@ export class VisitorListComponent implements OnInit {
   data: any[] = [];
   // dtOptions: DataTables.Settings = {};
 
- 
+
   constructor(
     private visitorService: VisitorService,
     private generalService: GeneralsService
-  ) {}
+  ) { }
 
 
- 
+
   ngOnInit(): void {
 
     // this.dtOptions = {
@@ -50,6 +50,7 @@ export class VisitorListComponent implements OnInit {
           },
           stateSave: true,
           data: this.data,
+          order: [[6, 'desc']], // เรียงลำดับตามเวลาเข้า
           columns: [
             { data: 'firstName', title: 'ชื่อ', className: "text-center" },
             { data: 'lastName', title: 'นามสกุล', className: "text-center" },
@@ -57,6 +58,15 @@ export class VisitorListComponent implements OnInit {
             { data: 'idCard', title: 'บัตรประชาชน', className: "text-center" },
             { data: 'token', title: 'หมายเลขบัตรอนุญาติ', className: "text-center" },
             { data: 'destFloor', title: 'ติดต่อชั้น', className: "text-center" },
+            { data: 'checkIn', title: 'เวลาเข้า', className: "text-center",
+              render: function (data: any) {
+                if (data) {
+                  var date = new Date(data);
+                  return date.toTimeString().split(' ')[0];
+                }
+                return '';
+              }
+            },
             {
               title: 'แสดง',
               className: 'text-center',
@@ -78,7 +88,7 @@ export class VisitorListComponent implements OnInit {
       });
     })
 
-    
+
   }
 
 

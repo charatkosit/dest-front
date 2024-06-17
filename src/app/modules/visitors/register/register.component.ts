@@ -1,5 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AutoReadIDCard, ExtractData } from 'src/app/interfaces/IDCardData';
 import { VisitorService } from 'src/app/services/visitor.service';
@@ -13,7 +15,7 @@ declare var $: any;
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-export class RegisterComponent implements OnInit , AfterViewInit , OnDestroy{
+export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('videoElement', { static: false }) videoElement!: ElementRef;
   @ViewChild('canvasElement') canvasElement!: ElementRef;
@@ -24,7 +26,7 @@ export class RegisterComponent implements OnInit , AfterViewInit , OnDestroy{
 
   capturedButton = 0;
 
-  user = {
+  guest = {
     firstName: '',
     lastName: '',
     phone: '',
@@ -32,26 +34,41 @@ export class RegisterComponent implements OnInit , AfterViewInit , OnDestroy{
     idCard: '',
     token: '',
     destFloor: ''
+ 
 
   };
 
   idCardData!: ExtractData;
 
+  visitorForm!: FormGroup;
+
   constructor(
+    private fb: FormBuilder,
     private http: HttpClient,
+    private router: Router,
     private webSocket: WebsocketService,
     private visitor: VisitorService
-  ) { }
+  ) {
+    this.visitorForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      phone: ['', Validators.required],
+      idCard: [''],
+      token: ['', Validators.required],
+      destFloor: ['', Validators.required]
+   
+    });
+  }
 
 
   autoReadData$!: Observable<AutoReadIDCard | null>;
 
   ngAfterViewInit(): void {
-    this.startCamera();
+    // this.startCamera();
   }
 
   ngOnInit(): void {
-    this.onAlert_AutoGetIDCard()
+    // this.onAlert_AutoGetIDCard()
 
     this.autoReadData$ = this.webSocket.getAutoReadData();
     console.log(`this.autoReadData$`, this.autoReadData$)
@@ -99,7 +116,7 @@ export class RegisterComponent implements OnInit , AfterViewInit , OnDestroy{
   }
 
 
- 
+
   startCamera() {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
@@ -119,7 +136,7 @@ export class RegisterComponent implements OnInit , AfterViewInit , OnDestroy{
     context.drawImage(this.videoElement.nativeElement, 0, 0, this.videoWidth, this.videoHeight);
 
     this.saveImage();
-    this.capturedButton++ ;
+    this.capturedButton++;
   }
 
   saveImage() {
@@ -134,7 +151,7 @@ export class RegisterComponent implements OnInit , AfterViewInit , OnDestroy{
     link.href = dataUrl;
     link.download = fileName;
     link.click();
-    
+
   }
 
   stopCamera() {
@@ -171,26 +188,36 @@ export class RegisterComponent implements OnInit , AfterViewInit , OnDestroy{
 
 
   onSubmit() {
+
+    console.log(`this.visitorForm`, this.visitorForm.value);
     // ทำการส่งข้อมูล
-    const url = '/api/visitors'
-    this.http.post(url, this.user).subscribe({
-      next: response => {
-        console.log(response);
-        this.resetForm();
-      },
-      error: error => {
-        console.error(error);
-      }
+
+    const uri = '/api/visitors'
+    const data = this.visitorForm.value;
+    const headers = new HttpHeaders({'Content-Type': 'application/json'});
+
+    if (this.visitorForm.valid) {
+      this.http.post(uri,data,{headers}).subscribe({
+        next: response => {
+          console.log(response);
+          this.resetForm();
+        },
+        error: error => {
+          console.error(error);
+        }
+      });
     }
 
-    );
+   //
+   this.router.navigate(['/visitors/visitor-list']);
+
   }
 
 
 
 
   resetForm() {
-    this.user = {
+    this.guest = {
       firstName: '',
       lastName: '',
       phone: '',
@@ -198,6 +225,8 @@ export class RegisterComponent implements OnInit , AfterViewInit , OnDestroy{
       idCard: '',
       token: '',
       destFloor: ''
+  
+
     };
   }
 

@@ -21,185 +21,85 @@
   <!-- Main content -->
   <section class="content">
 
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <div class="card card-primary">
-            <div class="card-header">
-              <h3 class="card-title">ผู้มาติดต่อ</h3>
-            </div>
-
-            <div class="card-body register-card-body">
-              <div class="row">
-
-                <div class="col-md-9">
-                  <form #registerForm="ngForm" (submit)="onSubmit()">
-                    <div class="input-group mb-3">
-
-                      <input type="text" class="form-control" placeholder="ชื่อ" [(ngModel)]="this.idCardData.firstName"
-                        name="firstName" required>
-                      <div class="input-group-append">
-                        <div class="input-group-text" style="margin-right: 10px;">
-                          <span class="fas fa-user"></span>
-                        </div>
-                      </div>
-
-
-                      <input type="text" class="form-control" placeholder="นามสกุล"
-                        [(ngModel)]="this.idCardData.lastName" name="lastName" required>
-                      <div class="input-group-append">
-                        <div class="input-group-text">
-                          <span class="fas fa-user"></span>
-                        </div>
-                      </div>
-
-                    </div>
-
-                    <div class="input-group mb-3">
-                      <input type="text" class="form-control" placeholder="ที่อยู่"
-                        [(ngModel)]="this.idCardData.address" name="address" required>
-                      <div class="input-group-append">
-                        <div class="input-group-text">
-                          <span class="fas fa-home"></span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="input-group mb-3">
-                      <input type="text" class="form-control" placeholder="บัตรประชาชน"
-                        [(ngModel)]="this.idCardData.idCard" name="idCard" required>
-                      <div class="input-group-append">
-                        <div class="input-group-text">
-                          <span class="fas fa-id-card"></span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="card card-primary card-outline">
-                      <div class="card-body">
-
-
-                        <div class="input-group mb-3">
-                          <input type="text" class="form-control" placeholder="โทรศัพท์" [(ngModel)]="user.phone"
-                            name="phone" required>
-                          <div class="input-group-append">
-                            <div class="input-group-text">
-                              <span class="fas fa-phone"></span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="input-group mb-3">
-                          <input type="text" class="form-control" placeholder="---ติดต่องาน--" [(ngModel)]="user.phone"
-                            name="phone" required>
-                          <div class="input-group-append">
-                            <div class="input-group-text">
-                              <span class="fas fa-phone"></span>
-                            </div>
-                          </div>
-                        </div>
-
-                        <!-- ต่อด้วยช่องนามสกุล, บัตรประชาชน -->
-                        <div class="input-group mb-3">
-                          <select class="form-control" [(ngModel)]="user.destFloor" name="floor">
-                            <option value="">----เลือกชั้นที่ต้องการ-----</option>
-                            <!-- ตัวเลือกของชั้นที่ -->
-
-                            <option value="2">ชั้น 2</option>
-                            <option value="3">ชั้น 3</option>
-                            <option value="4">ชั้น 4</option>
-                            <option value="5">ชั้น 5</option>
-                            <option value="6">ชั้น 6</option>
-                            <option value="7">ชั้น 7</option>
-                            <option value="8">ชั้น 8</option>
-                            <option value="9">ชั้น 9</option>
-                            <option value="10">ชั้น10</option>
-                            <option value="11">ชั้น 11</option>
-                            <option value="12">ชั้น 12</option>
-                            <option value="13">ชั้น 13</option>
-                            <option value="14">ชั้น 14</option>
-                            <option value="15">ชั้น 15</option>
-                            <option value="16">ชั้น 16</option>
-                            <option value="17">ชั้น 17</option>
-                            <option value="18">ชั้น 18</option>
-                            <option value="19">ชั้น 19</option>
-                            <option value="20">ชั้น 20</option>
-                            <option value="21">ชั้น 21</option>
-                            <option value="22">ชั้น 22</option>
-                            <option value="23">ชั้น 23</option>
-                            <option value="24">ชั้น 24</option>
-                            <option value="25">ชั้น 25</option>
-                            <option value="26">ชั้น 26</option>
-                            <option value="27">ชั้น 27</option>
-                            <option value="28">ชั้น 28</option>
-                            <option value="29">ชั้น 29</option>
-                            <option value="30">ชั้น 30</option>
-                            <option value="31">ชั้น 31</option>
-                            <option value="32">ชั้น 32</option>
-
-
-                          </select>
-                        </div>
-
-                        <div class="input-group mb-3">
-                          <input type="text" class="form-control" placeholder="หมายเลขบัตรอนุญาต"
-                            [(ngModel)]="user.token" name="token" required>
-                          <div class="input-group-append">
-                            <div class="input-group-text">
-                              <span class="fas fa-credit-card"></span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-
-
-
-
-
-                    <div class="row">
-                      <div class="col-4 d-flex justify-content-between">
-                        <button type="submit" class="btn btn-primary btn-block"
-                          [disabled]="!registerForm.valid">ลงทะเบียน</button>
-                      </div>
-                      <div class="col-4 d-flex justify-content-between">
-                        <button type="button" class="btn btn-danger" (click)="stopCamera()">ล้างข้อมูล</button>
-                      </div>
-                    </div>
-                  </form>
-                </div>
-                <div class="col-md-3">
-
-                  <div *ngIf="autoReadData$ | async as autoReadData" class="d-flex justify-content-center">
-                    <img [src]="'data:image/jpeg;base64,' + autoReadData.ID_Photo" alt="ID Photo" />
+    <div class="container-fluid">
+      <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">ผู้มาติดต่อ</h3>
+        </div>
+        <div class="card-body register-card-body">
+          <div>
+            <form [formGroup]="visitorForm" (ngSubmit)="onSubmit()">
+              <div class="input-group mb-3">
+                <input class="form-control" id="firstName" formControlName="firstName" placeholder="ชื่อ">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-user"></span>
                   </div>
-
-                  <div class="card" style="width: 15rem;">
-                    <video #videoElement autoplay></video>
-
-                    <canvas #canvasElement style="display:none;"></canvas>
-                    <div class="card-body">
-                      <button *ngIf="capturedButton===0" class="btn btn-primary w-100" (click)="capture()">Capture
-                      </button>
-                      <button *ngIf="capturedButton>0" class="btn btn-primary w-100" (click)="capture()">Re-Capture <i
-                          class="fas fa-sync-alt" style="margin-left:2px"></i></button>
-
-                    </div>
-                  </div>
-       
                 </div>
               </div>
 
+              <div class="input-group mb-3">
+                <input class="form-control" id="lastName" formControlName="lastName" placeholder="นามสกุล">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-users"></span>
+                  </div>
+                </div>
+              </div>
 
+              <div class="input-group mb-3">
+                <input class="form-control" id="phone" formControlName="phone" placeholder="โทรศัพท์">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-phone"></span>
+                  </div>
+                </div>
+              </div>
 
-            </div>
+              <div class="input-group mb-3">
+                <input class="form-control" id="idCard" formControlName="idCard" placeholder="เลขบัตรประชาชน">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-id-card"></span>
+                  </div>
+                </div>
+              </div>
 
+              <div class="input-group mb-3">
+                <input class="form-control" id="token" formControlName="token" placeholder="หมายเลขบัตรอนุญาต">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-credit-card"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="input-group mb-3">
+                <input class="form-control" id="destFloor" formControlName="destFloor" placeholder="ติดต่อชั้น">
+                <div class="input-group-append">
+                  <div class="input-group-text">
+                    <span class="fas fa-building"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-4">
+                  <button class="btn btn-primary btn-block" type="submit"
+                    [disabled]="visitorForm.invalid">Submit</button>
+                </div>
+              </div>
+
+            </form>
           </div>
-
         </div>
       </div>
+
+
+
     </div>
+
+
 
   </section>
   <!-- /.content -->

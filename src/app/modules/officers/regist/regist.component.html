@@ -21,7 +21,7 @@
     <!-- Main content -->
     <section class="content">
 
-        <div class="container-fluid">
+        <div class="container">
             <div class="row">
                 <div class="col-12">
 
@@ -46,7 +46,7 @@
                                         [(ngModel)]="user.lastName" name="lastName" required>
                                     <div class="input-group-append">
                                         <div class="input-group-text">
-                                            <span class="fas fa-user"></span>
+                                            <span class="fas fa-users"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -64,7 +64,7 @@
                                         [(ngModel)]="user.idOfficer" name="idCard" required>
                                     <div class="input-group-append">
                                         <div class="input-group-text">
-                                            <span class="fas fa-phone"></span>
+                                            <span class="fas fa-id-card"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -84,7 +84,7 @@
                                         [(ngModel)]="user.multiSelectFloor" name="multiSelectFloor" required>
                                     <div class="input-group-append">
                                         <div class="input-group-text">
-                                            <span class="fas fa-credit-card"></span>
+                                            <span class="fas fa-building"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -272,11 +272,16 @@
 
 
                                 <div class="row">
-                                    <div class="col-4 d-flex justify-content-between">
-                                        <button type="submit" class="btn btn-primary btn-block"
-                                            [disabled]="!registerForm.valid">ลงทะเบียน</button>
-                                        <button type="button" class="btn btn-danger"
-                                            (click)="resetForm()">รีเซต</button>
+                                    <div class="col-4 d-flex">
+                                        <div>
+                                            <button type="submit" class="btn btn-primary btn-block"
+                                                [disabled]="!registerForm.valid">ลงทะเบียน</button>
+                                        </div>
+
+                                        <div>
+                                            <button type="button" class="btn btn-warning"
+                                                (click)="resetForm()">รีเซต</button>
+                                        </div>
                                     </div>
                                 </div>
                             </form>

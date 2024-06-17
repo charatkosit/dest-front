@@ -9,3 +9,13 @@ button {
 .button-container .btn:last-child {
     margin-right: 0;
 }
+
+
+.table-responsive {
+    overflow-x: hidden;
+  }
+  @media (max-width: 768px) {
+    .table-responsive {
+      overflow-x: auto;
+    }
+  }
