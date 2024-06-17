@@ -62,7 +62,11 @@ export class OfficerListComponent implements OnInit {
             { data: 'phone', title: 'โทรศัพท์', className: "left-center" },
             { data: 'idOfficer', title: 'บัตรพนักงาน', className: "left-center" },
             { data: 'token', title: 'หมายเลขบัตรอนุญาต', className: "left-center" },
-            { data: 'multiSelectFloor', title: 'ติดต่อชั้น', className: "left-center" },
+            { data: 'multiSelectFloor', title: 'ติดต่อชั้น', className: "left-center",
+              render: function (data:any, type:any, row:any) {
+                return data ==='[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32]' ? data = 'ไปได้ทุกชั้น' : data;
+            }
+             },
             {
               title: 'แก้ไข',
               className: 'text-center',
