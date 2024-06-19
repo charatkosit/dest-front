@@ -5,6 +5,7 @@ import { OfficerService } from 'src/app/services/officer.service';
 import { OfficeEditComponent } from '../office-edit/office-edit.component';
 import { EditData } from 'src/app/interfaces/EditData';
 import { GeneralsService } from 'src/app/services/generals.service';
+import Swal from 'sweetalert2';
 declare var $: any;
 
 @Component({
@@ -62,11 +63,12 @@ export class OfficerListComponent implements OnInit {
             { data: 'phone', title: 'โทรศัพท์', className: "left-center" },
             { data: 'idOfficer', title: 'บัตรพนักงาน', className: "left-center" },
             { data: 'token', title: 'หมายเลขบัตรอนุญาต', className: "left-center" },
-            { data: 'multiSelectFloor', title: 'ติดต่อชั้น', className: "left-center",
-              render: function (data:any, type:any, row:any) {
-                return data ==='[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32]' ? data = 'ไปได้ทุกชั้น' : data;
-            }
-             },
+            {
+              data: 'multiSelectFloor', title: 'ติดต่อชั้น', className: "left-center",
+              render: function (data: any, type: any, row: any) {
+                return data === '[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32]' ? data = 'ไปได้ทุกชั้น' : data;
+              }
+            },
             {
               title: 'แก้ไข',
               className: 'text-center',
@@ -128,28 +130,61 @@ export class OfficerListComponent implements OnInit {
 
 
 
-  onDelete(id: number): void {
-    console.log(`onDelete: ${id}`);
-    // Add your logic for the delete action here
-    console.log(`onDelete: ${id}`);
-    this.officerService.delete(id).subscribe({
-      next: () => {
-        // Successfully deleted the officer, now update the table
-        const table = $('#example1').DataTable();
-        table.rows((idx: any, data: any, node: any) => data.id === id).remove().draw();
-        this.general.onAlertDelete();
-      },
-      error: (error) => {
-        console.error('Error:', error);
-      }
-    });
-  }
-
-
   deleteOfficer(id: number) {
     this.officerService.delete(id);
     this.officerService.getData().subscribe(data => { this.data = data })
 
+  }
+
+
+  onDelete(id: number) {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger"
+      },
+      buttonsStyling: false
+    });
+    swalWithBootstrapButtons.fire({
+      title: "คุณแน่ใจ?",
+      text: "ข้อมูลที่เลือกจะถูกลบออกจากระบบ!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "ใช่ ลบ!",
+      cancelButtonText: "ยกเลิก!",
+      reverseButtons: true
+    }).then((result) => {
+      if (result.isConfirmed) {
+
+        //ทำการลบข้อมูลที่เลือก
+        this.officerService.delete(id).subscribe({
+          next: () => {
+            // Successfully deleted the officer, now update the table
+            const table = $('#example1').DataTable();
+            table.rows((idx: any, data: any, node: any) => data.id === id).remove().draw();
+
+            //แสดงข้อความเมื่อลบสำเร็จ
+            swalWithBootstrapButtons.fire({
+              title: "Deleted!",
+              text: "ข้อมูลถูกลบ ออกจากระบบ",
+              icon: "success"
+            });
+          },
+          error: (error) => {
+            console.error('Error:', error);
+          }
+        });
+      } else if (
+        //แสดงข้อความเมื่อยกเลิกการลบ
+        result.dismiss === Swal.DismissReason.cancel
+      ) {
+        swalWithBootstrapButtons.fire({
+          title: "ยกเลิกแล้ว",
+          text: "ข้อมูลยังไม่ถูกลบ ออกจากระบบ",
+          icon: "error"
+        });
+      }
+    });
   }
 
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { BehaviorSubject, filter, first, Observable, Observer, Subject, take } from 'rxjs';
+import { BehaviorSubject, catchError, delay, filter, first, Observable, Observer, of, retry, retryWhen, Subject, take, timer } from 'rxjs';
 import { AutoReadIDCard, InitCommand } from '../interfaces/IDCardData';
 
 @Injectable({
@@ -20,13 +20,23 @@ export class WebsocketService {
   private connect(): void {
     this.socket$ = webSocket('ws://localhost:14820/TDKWAgent');
 
-    this.socket$.subscribe({
+    this.socket$.pipe(
+      retry({
+        count: 3, // ลองพยายามเชื่อมต่อ 3 ครั้ง
+        delay: (error, retryCount) => {
+          console.error(`Attempt ${retryCount}: Retrying in 1 second due to error:`, error);
+          return timer(1000); // รอ 1 วินาทีก่อนพยายามเชื่อมต่อใหม่
+        }
+      }),
+      catchError(err => {
+        console.error('Connection failed after 5 attempts', err);
+        return of(err); // หยุดความพยายามเชื่อมต่อ
+      })
+    ).subscribe({
       next: (message) => this.handleMessage(message),
-      error: (err) => console.error(err),
-      complete: () => console.warn('Completed!')
-    }
-
-    );
+      error: (err) => console.error('WebSocket error:', err),
+      complete: () => console.warn('WebSocket connection completed!')
+    });
 
     // ส่งคำสั่งเพื่อเลือกเครื่องอ่านบัตร
     this.sendMessage({
@@ -69,5 +79,9 @@ export class WebsocketService {
   public getAutoReadData(): Observable<AutoReadIDCard | null> {
     return this.autoReadData$.asObservable();
   }
+
+  public close(): void {
+    this.socket$.complete();
+  } 
 
 }

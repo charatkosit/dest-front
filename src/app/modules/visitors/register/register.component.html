@@ -23,79 +23,149 @@
 
     <div class="container-fluid">
       <div class="card card-primary">
-        <div class="card-header">
-          <h3 class="card-title">ผู้มาติดต่อ</h3>
+        <div class="card-header d-flex justify-content-between">
+
+          <div>
+            <h3 class="card-title">ผู้มาติดต่อ</h3>
+          </div>
+
+
+          <div class="form-group ">
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="smartCardSwitch"
+                (change)="onSmartCardSwitchChange($event)">
+              <label class="custom-control-label" for="smartCardSwitch">SmartCard?</label>
+            </div>
+          </div>
         </div>
         <div class="card-body register-card-body">
-          <div>
-            <form [formGroup]="visitorForm" (ngSubmit)="onSubmit()">
-              <div class="input-group mb-3">
-                <input class="form-control" id="firstName" formControlName="firstName" placeholder="ชื่อ">
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <span class="fas fa-user"></span>
+          <div class="row">
+            <div class="col-8">
+              <div class="card card-outline">
+                <div class="card-body">
+                  <form [formGroup]="visitorForm" (ngSubmit)="onSubmit()">
+                    <div class="input-group mb-3"  [class.is-invalid]="isInvalid('firstName')">
+                      <label for="firstName" class="col-form-label">ชื่อ:</label>
+                      <input class="form-control" id="firstName" formControlName="firstName" placeholder="ชื่อ">
+                      <div class="input-group-append">
+                        <div class="input-group-text">
+                          <span class="fas fa-user"></span>
+                        </div>
+                      </div>
+                    </div>
+    
+                    <div class="input-group mb-3" [class.is-invalid]="isInvalid('lastName')">
+                      <label for="lastName" class="col-form-label">นามสกุล:</label>
+                      <input class="form-control" id="lastName" formControlName="lastName" placeholder="นามสกุล">
+                      <div class="input-group-append">
+                        <div class="input-group-text">
+                          <span class="fas fa-users"></span>
+                        </div>
+                      </div>
+                    </div>
+    
+                    <div class="input-group mb-3" [class.is-invalid]="isInvalid('idCard')">
+                      <label for="idCard" class="col-form-label">บัตรประชาชน:</label>
+                      <input class="form-control" id="idCard" formControlName="idCard" placeholder="เลขบัตรประชาชน">
+                      <div class="input-group-append">
+                        <div class="input-group-text">
+                          <span class="fas fa-id-card"></span>
+                        </div>
+                      </div>
+                    </div>
+    
+                    <div class="input-group mb-3" [class.is-invalid]="isInvalid('phone')">
+                      <label for="phone" class="col-form-label">โทรศัพท์:</label>
+                      <input class="form-control" id="phone" formControlName="phone" placeholder="โทรศัพท์">
+                      <div class="input-group-append">
+                        <div class="input-group-text">
+                          <span class="fas fa-phone"></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="input-group mb-3" [class.is-invalid]="isInvalid('token')">
+                      <label for="token" class="col-form-label">เลขบัตรอนุญาต:</label>
+                      <input class="form-control" id="token" formControlName="token" placeholder="หมายเลขบัตรอนุญาต">
+                      <div class="input-group-append">
+                        <div class="input-group-text">
+                          <span class="fas fa-credit-card"></span>
+                        </div>
+                      </div>
+                    </div>
+    
+                    <div class="input-group mb-3" [class.is-invalid]="isInvalid('destFloor')">
+                      <label for="destFloor" class="col-form-label">ติดต่อชั้น:</label>
+                      <input class="form-control" id="destFloor" formControlName="destFloor" placeholder="ติดต่อชั้น">
+                      <div class="input-group-append">
+                        <div class="input-group-text">
+                          <span class="fas fa-building"></span>
+                        </div>
+                      </div>
+                    </div>
+    
+                    <div class="row">
+                      <div class="col-4">
+                        <button class="btn btn-primary btn-block" type="submit"
+                          [disabled]="visitorForm.invalid">Submit</button>
+                      </div>
+                    </div>
+    
+                  </form>
+                </div>
+           
+              </div>
+        
+            </div>
+
+            <div class="col-md-4">
+              <div class="card card-outline">
+                <div class="form-group">
+                  <div class="custom-control custom-switch">
+                    <input type="checkbox" class="custom-control-input" id="webCamSwitch"
+                      (change)="onWebCamSwitchChange($event)">
+                    <label class="custom-control-label" for="webCamSwitch">เปิดกล้อง?</label>
                   </div>
                 </div>
-              </div>
 
-              <div class="input-group mb-3">
-                <input class="form-control" id="lastName" formControlName="lastName" placeholder="นามสกุล">
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <span class="fas fa-users"></span>
+                <div class="card-body ">
+                  <div class="box-profile">
+                    <div class="circle-video-container"  (click)="capture()">
+                      <video #video class="circle-video" autoplay></video>
+                      
+                      
+                    </div>
+
                   </div>
-                </div>
-              </div>
 
-              <div class="input-group mb-3">
-                <input class="form-control" id="phone" formControlName="phone" placeholder="โทรศัพท์">
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <span class="fas fa-phone"></span>
-                  </div>
-                </div>
-              </div>
 
-              <div class="input-group mb-3">
-                <input class="form-control" id="idCard" formControlName="idCard" placeholder="เลขบัตรประชาชน">
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <span class="fas fa-id-card"></span>
-                  </div>
-                </div>
-              </div>
+                  <h3 class="profile-username text-center">{{idCardData.firstName}}-{{idCardData.lastName}}</h3>
 
-              <div class="input-group mb-3">
-                <input class="form-control" id="token" formControlName="token" placeholder="หมายเลขบัตรอนุญาต">
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <span class="fas fa-credit-card"></span>
-                  </div>
-                </div>
-              </div>
+                  <p class="text-muted text-center">{{idCardData.idCard}}</p>
 
-              <div class="input-group mb-3">
-                <input class="form-control" id="destFloor" formControlName="destFloor" placeholder="ติดต่อชั้น">
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <span class="fas fa-building"></span>
-                  </div>
+                  <ul class="list-group list-group-unbordered mb-3">
+                    <li class="list-group-item">
+                      <b>ที่อยู่</b> <a class="float-right">{{idCardData.address}}</a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>วันเกิด</b> <a class="float-right">{{idCardData.birthday}}</a>
+                    </li>
+                    <li class="list-group-item">
+                      <b>บัตรหมดอายุ</b> <a class="float-right">{{idCardData.expireDate}}</a>
+                    </li>
+                  </ul>
+                  
+                  <a (click)="capture()" class="btn btn-warning btn-block"><b>Take Photo</b></a>
                 </div>
+                <!-- /.card-body-->
+                
               </div>
-
-              <div class="row">
-                <div class="col-4">
-                  <button class="btn btn-primary btn-block" type="submit"
-                    [disabled]="visitorForm.invalid">Submit</button>
-                </div>
-              </div>
-
-            </form>
+            </div>
           </div>
         </div>
       </div>
 
-
+      
 
     </div>
 

@@ -28,6 +28,8 @@ export class OfficeEditComponent {
 
 
   save() {
+    console.log(`EditData: ${JSON.stringify(this.editData)}`);
+
     this.modal.close(this.editData);
     this.router.navigate(['/officers/officer-list']);
   }

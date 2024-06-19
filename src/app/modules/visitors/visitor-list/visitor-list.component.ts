@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { GeneralsService } from 'src/app/services/generals.service';
 import { VisitorService } from 'src/app/services/visitor.service';
 declare var $: any;
@@ -8,7 +8,7 @@ declare var $: any;
   templateUrl: './visitor-list.component.html',
   styleUrls: ['./visitor-list.component.css']
 })
-export class VisitorListComponent implements OnInit {
+export class VisitorListComponent implements OnInit, OnDestroy{
   data: any[] = [];
   // dtOptions: DataTables.Settings = {};
 
@@ -21,13 +21,6 @@ export class VisitorListComponent implements OnInit {
 
 
   ngOnInit(): void {
-
-    // this.dtOptions = {
-    //   pagingType: 'full_numbers',
-    //   pageLength: 10,
-    //   processing: true
-    //   // คุณสามารถเพิ่มตัวเลือกอื่นๆ ตามต้องการ
-    // };
     this.visitorService.getData().subscribe(data => {
       this.data = data;
       console.log(data)
@@ -58,7 +51,8 @@ export class VisitorListComponent implements OnInit {
             { data: 'idCard', title: 'บัตรประชาชน', className: "text-center" },
             { data: 'token', title: 'หมายเลขบัตรอนุญาติ', className: "text-center" },
             { data: 'destFloor', title: 'ติดต่อชั้น', className: "text-center" },
-            { data: 'checkIn', title: 'เวลาเข้า', className: "text-center",
+            {
+              data: 'checkIn', title: 'เวลาเข้า', className: "text-center",
               render: function (data: any) {
                 if (data) {
                   var date = new Date(data);
@@ -73,17 +67,16 @@ export class VisitorListComponent implements OnInit {
               data: null,
               render: function (data: any, type: any, row: any) {
                 console.log(`row is ${JSON.stringify(row.id)}`);
-                return '<button class="btn btn-primary btn-details" data-id="' + row.id + '">รายละเอียด</button>';
+                return '<button class="btn btn-warning btn-details" data-id="' + row.id + '">คืนบัตร</button>';
               }
             },
           ]
         });
         $(document).on('click', '.btn-details', () => {
           var id = $(event?.target).data('id');
-
           console.log(`when click: ${id}`);
-
         });
+
 
       });
     })
@@ -92,6 +85,18 @@ export class VisitorListComponent implements OnInit {
   }
 
 
+ngOnDestroy(): void {
+  try {
+    // Your cleanup code or method calls
+    this.cleanup();
+  } catch (error) {
+    console.error('Error during ngOnDestroy:', error);
+  }
+}
 
+private cleanup(): void {
+  // Cleanup logic here
+  console.log('Cleaning up resources...');
+}
 
 }

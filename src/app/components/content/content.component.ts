@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { OfficerService } from 'src/app/services/officer.service';
 import { VisitorService } from 'src/app/services/visitor.service';
 
@@ -10,10 +11,13 @@ import { VisitorService } from 'src/app/services/visitor.service';
 export class ContentComponent implements OnInit {
 
   
-  officerCount:number = 0;
-  visitorCount:number = 0;
+  officerCount!:number 
+  visitorCount!:number
 
-  constructor(private officerService: OfficerService,
+
+  constructor(
+    private router: Router,
+    private officerService: OfficerService,
     private visitorService: VisitorService) { }
 
   ngOnInit(): void {
@@ -25,8 +29,30 @@ export class ContentComponent implements OnInit {
     this.officerService.getOfficerCount().subscribe(data => {
       this.officerCount = data;
       console.log(data)
+
     })
+
+
   }
 
+  onClickToVisitors(){
+    this.router.navigate(['/visitors/visitor-list']);
+  }
+
+  onClickToOfficers(){
+    this.router.navigate(['/officers/officer-list']);
+  }
+
+
+  // updateOfficerCount() {
+  //   // หารให้ได้ 8 step
+  //   let step = this.officerCount / 100
+  //   if (this.currentOfficerCount < this.officerCount) {
+  //     this.currentOfficerCount = this.currentOfficerCount + step;
+  //   } else {
+  //     this.currentOfficerCount = this.officerCount
+  //   };
+
+  // }
 
 }

@@ -7,3 +7,74 @@
     margin: 0 10px; /* เพิ่มระยะห่างระหว่างปุ่ม */
   }
   
+  .box-profile {
+    display: flex; /* ใช้ Flexbox */
+    flex-direction: column; /* จัดแนวในแนวตั้ง */
+    align-items: center; /* จัดศูนย์ในแนวนอน */
+  }
+  .circle-video-container {
+    width: 230px; /* กำหนดขนาดความกว้างของวงแหวน */
+    height: 230px; /* กำหนดขนาดความสูงของวงแหวน */
+    display: flex; /* ใช้ Flexbox เพื่อจัดศูนย์ */
+    align-items: center; /* จัดศูนย์แนวตั้ง */
+    justify-content: center; /* จัดศูนย์แนวนอน */
+    padding: 5px; /* ระยะห่างจากรูปที่แสดง */
+    background-color: #808080; /* สีเทาของวงแหวน */
+    border-radius: 50%; /* ทำให้ขอบของวงแหวนกลม */
+  }
+  
+  .circle-video , .circle-canvas{
+    width: 220px; /* กำหนดขนาดความกว้างของวิดีโอ */
+    height: 220px; /* กำหนดขนาดความสูงของวิดีโอ */
+    border-radius: 50%; /* ทำให้ขอบกลม */
+    object-fit: cover; /* ครอบคลุมพื้นที่ทั้งหมดของกรอบ */
+    border: 5px solid #ffffff; /* กำหนดสีและขนาดของขอบ */
+  }
+
+  .hidden {
+    display: none;
+  }
+  
+
+  .input-group {
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-group label {
+    margin-right: 10px;
+    min-width: 150px; /* กำหนดความกว้างของ label ให้เท่ากันทั้งหมด */
+    text-align: right; /* จัดข้อความให้ชิดขวา */
+  }
+  
+  .input-group .form-control {
+    flex: 1; /* ให้ input text ขยายเต็มที่ที่เหลือจาก label */
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+  
+  .input-group-append {
+    flex-shrink: 0; /* ป้องกันไม่ให้ icon ย่อหรือขยาย */
+  }
+  
+  .input-group-append .input-group-text {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    height: 100%; /* ทำให้ความสูงของกรอบ icon เท่ากับ input text */
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-group.is-invalid .form-control {
+    border-color: red;
+  }
+  
+  .input-group.is-invalid .input-group-text {
+    border-color: red;
+  }
+  
+  .text-danger {
+    font-size: 0.875rem;
+    margin-top: -10px;
+    margin-bottom: 10px;
+  }

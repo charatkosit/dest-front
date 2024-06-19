@@ -1,21 +1,4 @@
-button {
-    margin-right: 10px; /* เพิ่มระยะห่างด้านขวาของปุ่ม */
+.dataTables_length {
+  display: none;
 }
 
-.button-container .btn {
-    margin-right: 10px;
-}
-
-.button-container .btn:last-child {
-    margin-right: 0;
-}
-
-
-.table-responsive {
-    overflow-x: hidden;
-  }
-  @media (max-width: 768px) {
-    .table-responsive {
-      overflow-x: auto;
-    }
-  }
