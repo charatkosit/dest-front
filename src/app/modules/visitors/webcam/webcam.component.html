@@ -1,7 +1,0 @@
-<div class="webcam-container">
-    <webcam [height]="400" [width]="400" [trigger]="triggerObservable" (imageCapture)="handleImage($event)"></webcam>
-</div>
-<div class="image-container" *ngIf="webcamImage">
-    <img [src]="webcamImage.imageAsDataUrl" />
-</div>
-<button mat-raised-button (click)="triggerSnapshot()">ถ่ายภาพ</button>
