@@ -17,9 +17,8 @@ RUN npm cache clean --force
 # COPY . .  เพื่อ copy Code, package.json, package-lock.json local ไปยัง  /app (ฝั่ง docker)
 # สั่งรัน  npm install เพื่อติดตั้ง  node_module
 # สั่งรัน  npm run build เพื่อ build project  angular
-
-RUN npm install
 COPY . .
+RUN npm install
 RUN npm run build
 
 
