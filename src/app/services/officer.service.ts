@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class OfficerService {
 
-  private apiUrl = '/api/officers/'
+  private apiUrl = '/api/officers'
 
   constructor(
     private http: HttpClient,
