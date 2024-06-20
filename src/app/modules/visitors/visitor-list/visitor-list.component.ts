@@ -8,7 +8,7 @@ declare var $: any;
   templateUrl: './visitor-list.component.html',
   styleUrls: ['./visitor-list.component.css']
 })
-export class VisitorListComponent implements OnInit, OnDestroy{
+export class VisitorListComponent implements OnInit, OnDestroy {
   data: any[] = [];
   // dtOptions: DataTables.Settings = {};
 
@@ -49,7 +49,7 @@ export class VisitorListComponent implements OnInit, OnDestroy{
             { data: 'lastName', title: 'นามสกุล', className: "text-center" },
             { data: 'phone', title: 'โทรศัพท์', className: "text-center" },
             { data: 'idCard', title: 'บัตรประชาชน', className: "text-center" },
-            { data: 'token', title: 'หมายเลขบัตรอนุญาติ', className: "text-center" },
+            { data: 'token', title: 'บัตรอนุญาติ', className: "text-center" },
             { data: 'destFloor', title: 'ติดต่อชั้น', className: "text-center" },
             {
               data: 'checkIn', title: 'เวลาเข้า', className: "text-center",
@@ -67,36 +67,57 @@ export class VisitorListComponent implements OnInit, OnDestroy{
               data: null,
               render: function (data: any, type: any, row: any) {
                 console.log(`row is ${JSON.stringify(row.id)}`);
-                return '<button class="btn btn-warning btn-details" data-id="' + row.id + '">คืนบัตร</button>';
-              }
+                if(row.checkOut == null){
+                return '<button class="btn btn-warning btn-returnCard" data-id="' + row.id + '">คืนบัตร</button>';
+                }else{
+                  return '<button class="btn btn-default btn-returnCard" data-id="' + row.id + '" disabled>คืนแล้ว</button>';
+                }
+              } 
             },
           ]
         });
-        $(document).on('click', '.btn-details', () => {
+        $(document).on('click', '.btn-returnCard', () => {
           var id = $(event?.target).data('id');
           console.log(`when click: ${id}`);
+          this.onCheckOut(id);
         });
-
-
       });
     })
+  }
 
+
+  ngOnDestroy(): void {
+    try {
+      // Your cleanup code or method calls
+      this.cleanup();
+    } catch (error) {
+      console.error('Error during ngOnDestroy:', error);
+    }
+  }
+
+  private cleanup(): void {
+    // Cleanup logic here
+    console.log('Cleaning up resources...');
+  }
+
+
+
+  onCheckOut(id: any): void {
+    this.visitorService.checkout(id).subscribe({
+      next: data => {
+        console.log(data);
+        this.generalService.showSuccess('คืนบัตรสำเร็จ');
+      }, error: error => {
+        console.log(error);
+        this.generalService.showError('คืนบัตรไม่สำเร็จ');
+      }
+    }
+
+   );
 
   }
 
 
-ngOnDestroy(): void {
-  try {
-    // Your cleanup code or method calls
-    this.cleanup();
-  } catch (error) {
-    console.error('Error during ngOnDestroy:', error);
-  }
-}
 
-private cleanup(): void {
-  // Cleanup logic here
-  console.log('Cleaning up resources...');
-}
 
 }

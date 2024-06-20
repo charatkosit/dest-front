@@ -19,6 +19,9 @@ export class VisitorService {
     return this.http.get<any>('/api/visitors/count')
   }
 
+  checkout(id:number): Observable<any> {
+    return this.http.get<any>('/api/visitors/checkout/'+id)
+  }
 
   formatDateString(dateString: string): string {
     if (dateString.length !== 8) {

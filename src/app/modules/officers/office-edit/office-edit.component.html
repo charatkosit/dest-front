@@ -1,35 +1,34 @@
 <div class="modal-header">
-    <h4 class="modal-title">แก้ไขข้อมูล</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  <h4 class="modal-title">แก้ไขข้อมูล</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+  <div class="mb-3">
+    <label for="firstName" class="form-label">ชื่อ</label>
+    <input type="text" class="form-control" id="firstName" [(ngModel)]="editData.firstName">
   </div>
-  <div class="modal-body">
-    <div class="mb-3">
-      <label for="firstName" class="form-label">ชื่อ</label>
-      <input type="text" class="form-control" id="firstName" [(ngModel)]="editData.firstName">
-    </div>
-    <div class="mb-3">
-      <label for="lastName" class="form-label">นามสกุล</label>
-      <input type="text" class="form-control" id="lastName" [(ngModel)]="editData.lastName">
-    </div>
-    <div class="mb-3">
-      <label for="phone" class="form-label">โทรศัพท์</label>
-      <input type="text" class="form-control" id="phone" [(ngModel)]="editData.phone">
-    </div>
-    <div class="mb-3">
-      <label for="employeeId" class="form-label">บัตรพนักงาน</label>
-      <input type="text" class="form-control" id="employeeId" [(ngModel)]="editData.idOfficer">
-    </div>
-    <div class="mb-3">
-      <label for="licenseNumber" class="form-label">หมายเลขบัตรอนุญาติ</label>
-      <input type="text" class="form-control" id="licenseNumber" [(ngModel)]="editData.token">
-    </div>
-    <div class="mb-3">
-      <label for="contactFloor" class="form-label">ติดต่อชั้น</label>
-      <input type="text" class="form-control" id="contactFloor" [(ngModel)]="editData.multiSelectFloor">
-    </div>
+  <div class="mb-3">
+    <label for="lastName" class="form-label">นามสกุล</label>
+    <input type="text" class="form-control" id="lastName" [(ngModel)]="editData.lastName">
   </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modal.dismiss('cancel click')">ยกเลิก</button>
-    <button type="button" class="btn btn-primary" (click)="save()">บันทึก</button>
+  <div class="mb-3">
+    <label for="phone" class="form-label">โทรศัพท์</label>
+    <input type="text" class="form-control" id="phone" [(ngModel)]="editData.phone">
   </div>
-  
+  <div class="mb-3">
+    <label for="employeeId" class="form-label">บัตรพนักงาน</label>
+    <input type="text" class="form-control" id="employeeId" [(ngModel)]="editData.idOfficer">
+  </div>
+  <div class="mb-3">
+    <label for="licenseNumber" class="form-label">หมายเลขบัตรอนุญาติ</label>
+    <input type="text" class="form-control" id="licenseNumber" [(ngModel)]="editData.token">
+  </div>
+  <div class="mb-3">
+    <label for="contactFloor" class="form-label">ติดต่อชั้น</label>
+    <input type="text" class="form-control" id="contactFloor" [(ngModel)]="editData.multiSelectFloor">
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="modal.dismiss('cancel click')">ยกเลิก</button>
+  <button type="button" class="btn btn-primary" (click)="save()">บันทึก</button>
+</div>

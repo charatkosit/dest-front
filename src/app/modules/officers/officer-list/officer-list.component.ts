@@ -87,7 +87,7 @@ export class OfficerListComponent implements OnInit {
           var id = $(event?.target).data('id');
 
           console.log(`when edit click: ${id} ,${JSON.stringify(editData)}`);
-          this.onEdit(editData);
+          this.onEdit(id,editData);
 
         });
 
@@ -102,17 +102,17 @@ export class OfficerListComponent implements OnInit {
     })
   }
 
-  onEdit(editData: EditData): void {
+  onEdit(id:number,editData: EditData): void {
     console.log(`onEdit: ${JSON.stringify(editData)}`);
     // Add your logic for the edit action here
     const modalRef = this.modalService.open(OfficeEditComponent);
-    modalRef.componentInstance.editData = { ...editData }
+    modalRef.componentInstance.editData = { id, ...editData }
 
     //รับข้อมูลจาก modal ที่แก้ไขแล้ว ด้วยคำสั่ง this.modal.close(this.editData);
     modalRef.result.then((result) => {
       if (result !== undefined) {
         this.editData = result;
-        this.officerService.update(this.editData.id, this.editData).subscribe({
+        this.officerService.update(id, this.editData).subscribe({
           next: () => {
             // Successfully deleted the officer, now update the table
             const table = $('#example1').DataTable();

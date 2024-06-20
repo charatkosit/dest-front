@@ -96,6 +96,14 @@ export class GeneralsService {
     });
   }
 
+  showSuccess(message: string) {
+    Swal.fire(message, '', 'success')
+  }
+
+  showError(message: string) {
+    Swal.fire(message, '', 'error')
+  }
+
   onAlertUpdate(){
     $(function () {
       var Toast = Swal.mixin({
