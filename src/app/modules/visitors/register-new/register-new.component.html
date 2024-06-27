@@ -1,0 +1,250 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-1 thai-text">ลงทะเบียนพนักงาน</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a routerLink="/dashboard">หน้าหลัก</a></li>
+
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">พนักงาน</h3>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="container">
+
+                                <main>
+                                    <div class="row gx-5 my-1">
+                                        <div class="col-lg-8">
+                                            <div id="myProgress" style="width: 100%">
+                                                <div #myBar
+                                                    style="height: 15px; background-color: rgb(10, 206, 241); font-size: 70%; text-align: right; width: 0%;">
+                                                    <label #lbBar class="TextInput"
+                                                        style="font-weight: bold; color:rgb(255, 255, 255);"></label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+
+                                                <div class="col" style="text-align: right">
+                                                    <label #readingTime class="TextInput"
+                                                        style="font-weight: bold"></label>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-2">
+                                                    <div class="col-sm-2">
+                                                        <img #photo id="Photo" src="assets/images/PNIDCard.JPG"
+                                                            width="81" height="97">
+                                                    </div>
+                                                </div>
+                                                <div class="col my-2">
+                                                    <div>
+                                                        <label #physicalAddress class="TextInput"
+                                                            style="font-weight: bold"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <form class="needs-validation" novalidate="">
+                                                <div class="row g-0 gx-3">
+                                                    <hr class="my-2">
+                                                    <h5 class="my-0"
+                                                        style="font-weight: bold; color: rgb(17, 188, 231);">Text</h5>
+                                                    <div class="col-sm-4 gy-1">
+                                                        <label for="firstName_T" class="form-label my-0">First Name
+                                                            (Thai)</label>
+                                                        <input #firstNameT type="text" class="form-control"
+                                                            style="height: 25px">
+                                                    </div>
+
+                                                    <div class="col-sm-4 gy-1">
+                                                        <label for="lastName_T" class="form-label my-0">Last Name
+                                                            (Thai)</label>
+                                                        <input #lastNameT type="text" class="form-control"
+                                                            style="height: 25px">
+                                                    </div>
+
+                                                    <div class="col-sm-4 gy-1">
+                                                        <label for="nidnum" class="form-label my-0">Identification
+                                                            Number</label>
+                                                        <input #nidNum type="text" class="form-control"
+                                                            style="height: 25px">
+                                                    </div>
+
+                                                    <div class="col-sm-4 gy-1">
+                                                        <label for="gender" class="form-label my-0">Gender</label>
+                                                        <input #gender type="text" class="form-control"
+                                                            style="height: 25px">
+                                                    </div>
+                                                    <div class="col-sm-4 gy-1">
+                                                        <label for="birthdate" class="form-label my-0">Date of
+                                                            Birth</label>
+                                                        <input #birthDate type="text" class="form-control"
+                                                            style="height: 25px">
+                                                    </div>
+
+                                                    <div class="col-12 gy-1">
+                                                        <label for="addressArea" class="form-label my-0">Address</label>
+                                                        <div class="input-group has-validation">
+                                                            <textarea #address class="form-control my-0"
+                                                                rows="3"></textarea>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="col-md-5 col-lg-4 order-md-last">
+                                            <div class="row pi-draggable">
+                                                <div>
+                                                    <button type="submit" class="w-100 btn btn-info btn-lg my-4"
+                                                        (click)="clearScreen()">Clear
+                                                        Screen</button>
+                                                </div>
+                                            </div>
+                                            <li
+                                                class="list-group-item d-flex justify-content-between lh-sm border-info border-2 rounded-3 bg-light">
+                                                <div class="row text-center w-100">
+                                                    <div class="col-12 mb-3">
+                                                        <h6>
+                                                            <label #readerNameStatus class="form-check-label"></label>
+                                                        </h6>
+                                                    </div>
+                                                    <div class="col-12 mb-3">
+                                                        <h6 class="d-flex align-items-center justify-content-center">
+                                                            <label class="switch mx-3">
+                                                                <span #ledCardStatus class="slider round"></span>
+                                                            </label>
+                                                            <span class="text text-warning" #cardStatus
+                                                                (click)="getAutoReadOptions()">Card Status:
+                                                                Unknown</span>
+                                                        </h6>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="form-check form-check-inline">
+                                                            <input #chkAutoRead type="checkbox" class="form-check-input"
+                                                                (click)="setAutoReadOptions()" checked="checked">
+                                                            <label class="form-check-label" for="chkAutoRead">Auto
+                                                                Read</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 mt-3">
+                                                        <div class="form-check form-check-inline">
+                                                            <input #chkAutoNIDNumber type="checkbox"
+                                                                class="form-check-input" (click)="setAutoReadOptions()">
+                                                            <label class="form-check-label text-info"
+                                                                for="chkAutoNIDNumber" id="lbAutoNIDNumber">ID</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input #chkAutoNIDText type="checkbox"
+                                                                class="form-check-input" checked="checked"
+                                                                (click)="setAutoReadOptions()">
+                                                            <label class="form-check-label text-info"
+                                                                for="chkAutoNIDText" id="lbAutoNIDText">Text</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input #chkAutoAText type="checkbox"
+                                                                class="form-check-input" (click)="setAutoReadOptions()">
+                                                            <label class="form-check-label text-info" for="chkAutoAText"
+                                                                id="lbAutoAText">AText</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input #chkAutoNIDPhoto type="checkbox"
+                                                                class="form-check-input" checked="checked"
+                                                                (click)="setAutoReadOptions()">
+                                                            <label class="form-check-label text-info"
+                                                                for="chkAutoNIDPhoto" id="lbAutoNIDPhoto">Photo</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li class="list-group-item d-flex justify-content-between lh-sm border-info my-4 border-2 rounded-3"
+                                                style="background-color: rgb(245, 245, 219);">
+                                                <div class="row w-100">
+                                                    <div class="col-12">
+                                                        <h5 class="d-flex justify-content-center">
+                                                            <label class="form-check-label text-info fw-bold">Manual
+                                                                Read</label>
+                                                        </h5>
+                                                    </div>
+                                                    <div class="col-12 text-center my-2">
+                                                        <div class="form-check form-check-inline">
+                                                            <input #chkNIDNumber type="checkbox"
+                                                                class="form-check-input my-2" id="chkNIDNumber">
+                                                            <label class="form-check-label text-info my-2"
+                                                                for="chkNIDNumber">ID</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input #chkNIDText type="checkbox"
+                                                                class="form-check-input my-2" id="chkNIDText"
+                                                                checked="checked">
+                                                            <label class="form-check-label text-info my-2"
+                                                                for="chkNIDText">Text</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input #chkAText type="checkbox"
+                                                                class="form-check-input my-2" id="chkAText">
+                                                            <label class="form-check-label text-info my-2"
+                                                                for="chkAText">AText</label>
+                                                        </div>
+                                                        <div class="form-check form-check-inline">
+                                                            <input #chkNIDPhoto type="checkbox"
+                                                                class="form-check-input my-2" id="chkNIDPhoto"
+                                                                checked="checked">
+                                                            <label class="form-check-label text-info my-2"
+                                                                for="chkNIDPhoto">Photo</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 text-center my-2">
+                                                        <button #btngetreaderlist
+                                                            class="w-100 btn btn-info btn-lg text-white fw-bold"
+                                                            type="submit" (click)="getReaderlist()"
+                                                            id="btngetreaderlist">Get Reader List</button>
+                                                    </div>
+                                                    <div class="col-12 my-2">
+                                                        <select #listReadername class="form-select" name="form-select">
+                                                            <option value="">Reader not found</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-12 text-center my-2">
+                                                        <button class="btn btn-success btn-lg text-white fw-bold"
+                                                            type="submit" (click)="readNIDCard()">อ่านบัตร</button>
+                                                    </div>
+                                                </div>
+                                            </li>
+
+
+                                        </div>
+                                    </div>
+                                </main>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

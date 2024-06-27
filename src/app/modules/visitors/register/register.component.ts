@@ -78,7 +78,7 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   startSmartCard() {
-    this.autoReadData$ = this.webSocket.getAutoReadData();
+    // this.autoReadData$ = this.webSocket.getAutoReadData();
     console.log(`this.autoReadData$`, this.autoReadData$)
     this.autoReadData$.subscribe((data) => {
       console.log(`data`, data)
@@ -191,7 +191,7 @@ setDataToForm(idCardData: ExtractData){
     // if(this.autoReadData$){
     //   this.autoReadData$.unsubscribe();
     // }
-    this.webSocket.close();
+    // this.webSocket.close();
 
   }
 

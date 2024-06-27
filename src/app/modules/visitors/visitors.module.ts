@@ -6,6 +6,7 @@ import { VisitorsRoutingModule } from './visitors-routing.module';
 import { VisitorListComponent } from './visitor-list/visitor-list.component';
 import { WebsocketService } from 'src/app/services/websocket.service';
 import { MatButtonModule } from '@angular/material/button';
+import { RegisterNewComponent } from './register-new/register-new.component';
 
 
 
@@ -15,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
   declarations: [
     RegisterComponent,
     VisitorListComponent,
+    RegisterNewComponent,
    
   ],
   imports: [

@@ -1,0 +1,103 @@
+/*CSS for small size display*/
+@media screen and (max-width: 480px) {
+    .Logo_Images {
+      height: 25px;
+    }
+    .txtHeader {
+      font-size: 1px;
+    }
+    .txtDownload {
+      font-size: 1px;
+    }
+  }
+  
+  /*CSS for normal size display*/
+  @media screen and (min-width: 481px) and (max-width: 1024px) {
+    .Logo_Images {
+      height: 40px;
+    }
+    .txtHeader {
+      font-size: 15px;
+    }
+    .txtDownload {
+      font-size: 10px;
+    }
+  }
+  
+  /*CSS For large size display*/
+  @media screen and (min-width: 1025px) and (max-width: 1366px) {
+    .Logo_Images {
+      height: 40px;
+    }
+    .txtHeader {
+      font-size: 30px;
+    }
+    .txtDownload {
+      font-size: 16px;
+    }
+  }
+  
+  /*CSS For extra large size display*/
+  @media screen and (min-width: 1367px) {
+    .Logo_Images {
+      height: 50px;
+    }
+    .txtHeader {
+      font-weight: 900;
+      font-size: 45px;
+    }
+    .txtDownload {
+      font-size: 20px;
+    }
+  }
+  
+  .container {
+    max-width: 1200px;
+  }
+  
+  .bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+  
+  /* switch slide */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+  }
+  
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: orange;
+    -webkit-transition: 0;
+    transition: 0;
+  }
+  
+  .d-flex {
+    display: flex;
+    align-items: center; /* Center vertically */
+  }
+  
+  .mx-3 {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+  
+  .text-info {
+    color: #17a2b8;
+  }
+  
+  .fw-bold {
+    font-weight: bold;
+  }
+  
