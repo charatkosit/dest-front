@@ -62,13 +62,13 @@ export class VisitorListComponent implements OnInit, OnDestroy {
               }
             },
             {
-              title: 'แสดง',
+              title: 'สถานะ',
               className: 'text-center',
               data: null,
               render: function (data: any, type: any, row: any) {
                 console.log(`row is ${JSON.stringify(row.id)}`);
                 if(row.checkOut == null){
-                return '<button class="btn btn-warning btn-returnCard" data-id="' + row.id + '">คืนบัตร</button>';
+                return '<button class="btn btn-warning btn-returnCard" data-id="' + row.id + '">รอคืนบัตร</button>';
                 }else{
                   return '<button class="btn btn-default btn-returnCard" data-id="' + row.id + '" disabled>คืนแล้ว</button>';
                 }

@@ -64,32 +64,32 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                          
+
                                             <form [formGroup]="visitorForm" (ngSubmit)="onSubmit()">
-                                                <div class="row g-0 gx-3">
+                                                <div class="row">
                                                     <hr class="my-2">
 
-                                                    <div class="col-sm-4 gy-1">
+                                                    <div class="form-group col-sm-4">
                                                         <label for="firstName_T" class="form-label my-0">ชื่อ</label>
-                                                        <input #firstNameT type="text" class="form-control" id="firstName" formControlName="firstName"
-                                                            style="height: 25px">
+                                                        <input #firstNameT type="text" class="form-control"
+                                                            id="firstName" formControlName="firstName">
                                                     </div>
 
-                                                    <div class="col-sm-4 gy-1">
+                                                    <div class="form-group col-sm-4">
                                                         <label for="lastName_T" class="form-label my-0">นามสกุล</label>
-                                                        <input #lastNameT type="text" class="form-control" formControlName="lastName"
-                                                            style="height: 25px">
+                                                        <input #lastNameT type="text" class="form-control"
+                                                            formControlName="lastName">
                                                     </div>
 
-                                                    <div class="col-sm-4 gy-1">
+                                                    <div class="form-group col-sm-4">
                                                         <label for="nidnum" class="form-label my-0">บัตรประชาชน</label>
-                                                        <input #nidNum type="text" class="form-control" formControlName="idCard"
-                                                            style="height: 25px">
+                                                        <input #nidNum type="text" class="form-control"
+                                                            formControlName="idCard">
                                                     </div>
 
 
 
-                                                    <div class="col-12 gy-1">
+                                                    <div class="form-group col-sm-8">
                                                         <label for="addressArea" class="form-label my-0">ที่อยู่</label>
                                                         <div class="input-group has-validation">
                                                             <textarea #address class="form-control my-0"
@@ -97,71 +97,65 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-sm-4 gy-1">
+                                                    <div class="form-group col-sm-4">
                                                         <label for="phone" class="form-label my-0">โทรศัพท์</label>
-                                                        <input type="text" class="form-control" formControlName="phone"
-                                                            style="height: 25px">
+                                                        <input type="text" class="form-control" formControlName="phone">
+                                                    </div>
+                                                    <div class="form-group col-sm-4">
+                                                        <label>เรียกลิฟท์</label>
+                                                        <select class="custom-select">
+                                                            <option>ทั่วไป</option>
+                                                            <option>VIP</option>
+                                                            <option>รถเข็นผู้พิการ</option>
+
+                                                        </select>
                                                     </div>
 
                                                     <hr class="my-2">
 
-                                                    <div class="col-sm-4 gy-1">
-                                                        <label for="destFloor" class="form-label my-0">ติดต่อชั้น</label>
-                                                        <input type="text" class="form-control" formControlName="destFloor" style="height: 25px">
+                                                    <div class="row">
+
+                                                        <div class="form-group col-sm-4">
+                                                            <label for="destFloor"
+                                                                class="form-label my-0">ติดต่อชั้น</label>
+                                                            <input type="text" class="form-control"
+                                                                formControlName="destFloor" >
+                                                        </div>
+
+                                                        <div class="form-group col-sm-4">
+                                                            <label for="bussiness"
+                                                                class="form-label my-0">ติดต่อธุระ</label>
+                                                            <input type="text" class="form-control"
+                                                                formControlName="bussiness">
+                                                        </div>
+
+                                                        <div class="form-group col-sm-4">
+                                                            <label for="token"
+                                                                class="form-label my-0">บัตรอนุญาติ</label>
+                                                            <input type="text" class="form-control"
+                                                                formControlName="token" >
+                                                        </div>
                                                     </div>
 
-                                                    <div class="col-sm-4 gy-1">
-                                                        <label for="bussiness" class="form-label my-0">ติดต่อธุระ</label>
-                                                        <input type="text" class="form-control" formControlName="bussiness" style="height: 25px">
-                                                    </div>
-
-                                                    <div class="col-sm-4 gy-1">
-                                                        <label for="token" class="form-label my-0">บัตรอนุญาติ</label>
-                                                        <input type="text" class="form-control" formControlName="token" style="height: 25px">
-                                                    </div>
                                                 
 
-                                                </div>
-
                                                 <div class="row">
-                                                    <div class="col-4">
-                                                      <button class="btn btn-primary btn-block" type="submit"
-                                                      [disabled]="visitorForm.invalid">Submit</button>
+                                                    <div class="form-group col-sm-4">
+                                                        <button class="btn btn-primary btn-block" type="submit"
+                                                            [disabled]="visitorForm.invalid">บันทึก</button>
                                                     </div>
 
-                                                    <div class="col-4">
-                                                        <button class="btn btn-warning btn-block" type="reset" (click)="clearScreen()"
-                                                        >ล้างค่า</button>
-                                                      </div>
-                                                  </div>
+                                                    <div class="form-group col-sm-4">
+                                                        <button class="btn btn-warning btn-block" type="reset"
+                                                            (click)="clearScreen()">ล้างค่า</button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                             </form>
                                         </div>
                                         <div class="col-md-5 col-lg-4 order-md-last">
-                                            
-                                       
-                                            <li class="list-group-item d-flex justify-content-between lh-sm border-info my-4 border-2 rounded-3"
-                                                style="background-color: rgb(245, 245, 219);">
-                                                <!-- <div class="row w-100">
 
-                                                    <div class="col-12 text-center my-2">
-                                                        <button #btngetreaderlist
-                                                            class="w-100 btn btn-info btn-lg text-white fw-bold"
-                                                            type="submit" (click)="getReaderlist()"
-                                                            id="btngetreaderlist">Get Reader List</button>
-                                                    </div>
-                                                    <div class="col-12 my-2">
-                                                        <select #listReadername class="form-select" name="form-select">
-                                                            <option value="">Reader not found</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="col-12 text-center my-2">
-                                                        <button class="btn btn-success btn-lg text-white fw-bold"
-                                                            type="submit" (click)="readNIDCard()">อ่านบัตร</button>
-                                                    </div>
-                                                </div> -->
-                                            </li>
-
-
+                                           
                                         </div>
                                     </div>
                                 </main>
@@ -169,9 +163,8 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            status <label #readerNameStatus class="form-check-label"></label> 
-                            <span class="text text-warning" #cardStatus
-                            >ไม่พบเครื่องอ่าน </span>
+                            status <label #readerNameStatus class="form-check-label"></label>
+                            <span class="text text-warning" #cardStatus>ไม่พบเครื่องอ่าน </span>
                         </div>
                     </div>
                 </div>

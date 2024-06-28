@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { debounceTime, switchMap } from 'rxjs';
 import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
@@ -78,7 +79,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
     this.visitorForm = this.fb.group({
       firstName: [''],
       lastName: [''],
-      address:[''],
+      address: [''],
       phone: ['', Validators.required],
       idCard: [''],
       bussiness: [''],
@@ -89,12 +90,64 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
 
     })
 
-  
+
+
   }
 
   ngOnInit() {
     this.websocketService.connect("ws://localhost:14820/TDKWAgent");
     this.websocketService.messages$.subscribe(message => this.onGetMessage(message));
+
+    this.visitorForm.get('token')?.valueChanges.pipe(
+      debounceTime(300),
+
+    ).subscribe({
+      next: (value) => {
+        console.log(`value`, value);
+        this.changeNumToToken(value);
+      }
+    });
+  }
+
+
+  changeNumToToken(numOnCard: string) {
+    const uri = `/api/visitorCard/findToken/${numOnCard}`;
+    this.http.get<any[]>(uri).subscribe({
+      next: response => {
+        if (response) {
+           console.log(`newToken`, response[0].token);
+           this.visitorForm.controls['token'].setValue(response[0].token);
+        }
+      },
+      error: error => {
+        console.error(error);
+      }
+    });
+
+  }
+
+  updateOccupiedVisitorCard(token: string) {
+    const uri = `/api/visitorCard/update/${token}`;
+    this.http.patch(uri, { occupied : true}).subscribe({
+      next: response => {
+        console.log(response);
+      },
+      error: error => {
+        console.error(error);
+      }
+    });
+  }
+
+  updateFreeVisitorCard(token: string) {
+    const uri = `/api/visitorCard/update/${token}`;
+    this.http.patch(uri, { occupied : false}).subscribe({
+      next: response => {
+        console.log(response);
+      },
+      error: error => {
+        console.error(error);
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -249,7 +302,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
 
         this.issueNum = NIDData[22];
         this.nidNum.nativeElement.value = NIDData[0];
-        this.firstNameT.nativeElement.value = NIDData[1] + " " + NIDData[2];
+        this.firstNameT.nativeElement.value = NIDData[2];
         this.middleNameT = NIDData[3];
         this.lastNameT.nativeElement.value = NIDData[4];
         this.firstNameE = NIDData[5] + " " + NIDData[6];
@@ -327,7 +380,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
         console.log("Read error");
       }
       alert("ERROR Code 320 :" + status);
-      
+
     }
   }
 
@@ -355,7 +408,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
     this.myBar.nativeElement.style.width = "0%";
     this.lbBar.nativeElement.innerHTML = "0%";
     this.readingTime.nativeElement.innerHTML = "";
-   
+
   }
 
   disabledButton(disabled: boolean) {
@@ -590,7 +643,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
   }
 
 
- 
+
 
   onSubmit() {
     this.visitorForm.controls['firstName'].setValue(this.firstNameT.nativeElement.value.trim());
@@ -607,10 +660,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
     const uri = '/api/visitors'
     const data = this.visitorForm.value;
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-   
     if (this.visitorForm.valid) {
-
       console.log(`data visitorForm: ${JSON.stringify(data)}`)
       this.http.post(uri, data, { headers }).subscribe({
         next: response => {
@@ -622,6 +672,12 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
         }
       });
     }
+
+    // update บัตรถูกใช้งานแล้ว
+    this.updateOccupiedVisitorCard(this.visitorForm.controls['token'].value);
+
+
+
 
     //
     this.clearScreen();
