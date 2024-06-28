@@ -66,6 +66,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
 
 
   visitorForm!: FormGroup;
+  numOnCard!: string;
 
 
 
@@ -111,6 +112,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
 
 
   changeNumToToken(numOnCard: string) {
+    this.numOnCard = numOnCard;
     const uri = `/api/visitorCard/findToken/${numOnCard}`;
     this.http.get<any[]>(uri).subscribe({
       next: response => {
@@ -138,8 +140,8 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
     });
   }
 
-  updateFreeVisitorCard(token: string) {
-    const uri = `/api/visitorCard/update/${token}`;
+  updateFreeVisitorCard(numOnCard: string) {
+    const uri = `/api/visitorCard/update/${numOnCard}`;
     this.http.patch(uri, { occupied : false}).subscribe({
       next: response => {
         console.log(response);
@@ -674,7 +676,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
     }
 
     // update บัตรถูกใช้งานแล้ว
-    this.updateOccupiedVisitorCard(this.visitorForm.controls['token'].value);
+    this.updateOccupiedVisitorCard(this.numOnCard);
 
 
 
