@@ -83,7 +83,9 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
       idCard: [''],
       bussiness: [''],
       token: ['', Validators.required],
-      destFloor: ['', Validators.required]
+      destFloor: ['', Validators.required],
+      photoIDcard: [''],
+      photoWebCam: ['']
 
     })
 
@@ -591,13 +593,13 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
  
 
   onSubmit() {
-    this.visitorForm.controls['firstName'].setValue(this.firstNameT.nativeElement.value);
+    this.visitorForm.controls['firstName'].setValue(this.firstNameT.nativeElement.value.trim());
     this.visitorForm.controls['firstName'].markAsDirty(); // Mark the control as dirty
-    this.visitorForm.controls['lastName'].setValue(this.lastNameT.nativeElement.value);
+    this.visitorForm.controls['lastName'].setValue(this.lastNameT.nativeElement.value.trim());
     this.visitorForm.controls['lastName'].markAsDirty(); // Mark the control as dirty
-    this.visitorForm.controls['address'].setValue(this.address.nativeElement.value);
+    this.visitorForm.controls['address'].setValue(this.address.nativeElement.value.trim());
     this.visitorForm.controls['address'].markAsDirty(); // Mark the control as dirty
-    this.visitorForm.controls['idCard'].setValue(this.nidNum.nativeElement.value);
+    this.visitorForm.controls['idCard'].setValue(this.nidNum.nativeElement.value.trim());
     this.visitorForm.controls['idCard'].markAsDirty(); // Mark the control as dirty
     console.log(`this.visitorForm`, this.visitorForm.value);
     // ทำการส่งข้อมูล
@@ -609,7 +611,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
    
     if (this.visitorForm.valid) {
 
-      console.log(`data visitorForm`, data)
+      console.log(`data visitorForm: ${JSON.stringify(data)}`)
       this.http.post(uri, data, { headers }).subscribe({
         next: response => {
           console.log(response);
