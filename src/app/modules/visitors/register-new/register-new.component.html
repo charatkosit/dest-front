@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-1 thai-text">ลงทะเบียนพนักงาน</h1>
+                    <h1 class="m-1 thai-text">ลงทะเบียน</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -27,7 +27,7 @@
 
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">พนักงาน</h3>
+                            <h3 class="card-title">ผู้มาติดต่อ</h3>
                         </div>
 
                         <div class="card-body">
@@ -64,55 +64,71 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <form class="needs-validation" novalidate="">
+                                          
+                                            <form [formGroup]="visitorForm" (ngSubmit)="onSubmit()">
                                                 <div class="row g-0 gx-3">
                                                     <hr class="my-2">
-                                                    <h5 class="my-0"
-                                                        style="font-weight: bold; color: rgb(17, 188, 231);">Text</h5>
+
                                                     <div class="col-sm-4 gy-1">
-                                                        <label for="firstName_T" class="form-label my-0">First Name
-                                                            (Thai)</label>
-                                                        <input #firstNameT type="text" class="form-control"
+                                                        <label for="firstName_T" class="form-label my-0">ชื่อ</label>
+                                                        <input #firstNameT type="text" class="form-control" id="firstName" formControlName="firstName"
                                                             style="height: 25px">
                                                     </div>
 
                                                     <div class="col-sm-4 gy-1">
-                                                        <label for="lastName_T" class="form-label my-0">Last Name
-                                                            (Thai)</label>
-                                                        <input #lastNameT type="text" class="form-control"
+                                                        <label for="lastName_T" class="form-label my-0">นามสกุล</label>
+                                                        <input #lastNameT type="text" class="form-control" formControlName="lastName"
                                                             style="height: 25px">
                                                     </div>
 
                                                     <div class="col-sm-4 gy-1">
-                                                        <label for="nidnum" class="form-label my-0">Identification
-                                                            Number</label>
-                                                        <input #nidNum type="text" class="form-control"
+                                                        <label for="nidnum" class="form-label my-0">บัตรประชาชน</label>
+                                                        <input #nidNum type="text" class="form-control" formControlName="idCard"
                                                             style="height: 25px">
                                                     </div>
 
-                                                    <div class="col-sm-4 gy-1">
-                                                        <label for="gender" class="form-label my-0">Gender</label>
-                                                        <input #gender type="text" class="form-control"
-                                                            style="height: 25px">
-                                                    </div>
-                                                    <div class="col-sm-4 gy-1">
-                                                        <label for="birthdate" class="form-label my-0">Date of
-                                                            Birth</label>
-                                                        <input #birthDate type="text" class="form-control"
-                                                            style="height: 25px">
-                                                    </div>
+
 
                                                     <div class="col-12 gy-1">
-                                                        <label for="addressArea" class="form-label my-0">Address</label>
+                                                        <label for="addressArea" class="form-label my-0">ที่อยู่</label>
                                                         <div class="input-group has-validation">
                                                             <textarea #address class="form-control my-0"
                                                                 rows="3"></textarea>
                                                         </div>
                                                     </div>
 
+                                                    <div class="col-sm-4 gy-1">
+                                                        <label for="phone" class="form-label my-0">โทรศัพท์</label>
+                                                        <input type="text" class="form-control" formControlName="phone"
+                                                            style="height: 25px">
+                                                    </div>
 
+                                                    <hr class="my-2">
+
+                                                    <div class="col-sm-4 gy-1">
+                                                        <label for="destFloor" class="form-label my-0">ติดต่อชั้น</label>
+                                                        <input type="text" class="form-control" formControlName="destFloor" style="height: 25px">
+                                                    </div>
+
+                                                    <div class="col-sm-4 gy-1">
+                                                        <label for="bussiness" class="form-label my-0">ติดต่อธุระ</label>
+                                                        <input type="text" class="form-control" formControlName="bussiness" style="height: 25px">
+                                                    </div>
+
+                                                    <div class="col-sm-4 gy-1">
+                                                        <label for="token" class="form-label my-0">บัตรอนุญาติ</label>
+                                                        <input type="text" class="form-control" formControlName="token" style="height: 25px">
+                                                    </div>
+                                                
 
                                                 </div>
+
+                                                <div class="row">
+                                                    <div class="col-4">
+                                                      <button class="btn btn-primary btn-block" type="submit"
+                                                      [disabled]="visitorForm.invalid">Submit</button>
+                                                    </div>
+                                                  </div>
                                             </form>
                                         </div>
                                         <div class="col-md-5 col-lg-4 order-md-last">
@@ -127,9 +143,7 @@
                                                 class="list-group-item d-flex justify-content-between lh-sm border-info border-2 rounded-3 bg-light">
                                                 <div class="row text-center w-100">
                                                     <div class="col-12 mb-3">
-                                                        <h6>
-                                                            <label #readerNameStatus class="form-check-label"></label>
-                                                        </h6>
+
                                                     </div>
                                                     <div class="col-12 mb-3">
                                                         <h6 class="d-flex align-items-center justify-content-center">
@@ -141,82 +155,15 @@
                                                                 Unknown</span>
                                                         </h6>
                                                     </div>
-                                                    <div class="col-12">
-                                                        <div class="form-check form-check-inline">
-                                                            <input #chkAutoRead type="checkbox" class="form-check-input"
-                                                                (click)="setAutoReadOptions()" checked="checked">
-                                                            <label class="form-check-label" for="chkAutoRead">Auto
-                                                                Read</label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12 mt-3">
-                                                        <div class="form-check form-check-inline">
-                                                            <input #chkAutoNIDNumber type="checkbox"
-                                                                class="form-check-input" (click)="setAutoReadOptions()">
-                                                            <label class="form-check-label text-info"
-                                                                for="chkAutoNIDNumber" id="lbAutoNIDNumber">ID</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input #chkAutoNIDText type="checkbox"
-                                                                class="form-check-input" checked="checked"
-                                                                (click)="setAutoReadOptions()">
-                                                            <label class="form-check-label text-info"
-                                                                for="chkAutoNIDText" id="lbAutoNIDText">Text</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input #chkAutoAText type="checkbox"
-                                                                class="form-check-input" (click)="setAutoReadOptions()">
-                                                            <label class="form-check-label text-info" for="chkAutoAText"
-                                                                id="lbAutoAText">AText</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input #chkAutoNIDPhoto type="checkbox"
-                                                                class="form-check-input" checked="checked"
-                                                                (click)="setAutoReadOptions()">
-                                                            <label class="form-check-label text-info"
-                                                                for="chkAutoNIDPhoto" id="lbAutoNIDPhoto">Photo</label>
-                                                        </div>
-                                                    </div>
+
+
                                                 </div>
                                             </li>
 
                                             <li class="list-group-item d-flex justify-content-between lh-sm border-info my-4 border-2 rounded-3"
                                                 style="background-color: rgb(245, 245, 219);">
                                                 <div class="row w-100">
-                                                    <div class="col-12">
-                                                        <h5 class="d-flex justify-content-center">
-                                                            <label class="form-check-label text-info fw-bold">Manual
-                                                                Read</label>
-                                                        </h5>
-                                                    </div>
-                                                    <div class="col-12 text-center my-2">
-                                                        <div class="form-check form-check-inline">
-                                                            <input #chkNIDNumber type="checkbox"
-                                                                class="form-check-input my-2" id="chkNIDNumber">
-                                                            <label class="form-check-label text-info my-2"
-                                                                for="chkNIDNumber">ID</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input #chkNIDText type="checkbox"
-                                                                class="form-check-input my-2" id="chkNIDText"
-                                                                checked="checked">
-                                                            <label class="form-check-label text-info my-2"
-                                                                for="chkNIDText">Text</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input #chkAText type="checkbox"
-                                                                class="form-check-input my-2" id="chkAText">
-                                                            <label class="form-check-label text-info my-2"
-                                                                for="chkAText">AText</label>
-                                                        </div>
-                                                        <div class="form-check form-check-inline">
-                                                            <input #chkNIDPhoto type="checkbox"
-                                                                class="form-check-input my-2" id="chkNIDPhoto"
-                                                                checked="checked">
-                                                            <label class="form-check-label text-info my-2"
-                                                                for="chkNIDPhoto">Photo</label>
-                                                        </div>
-                                                    </div>
+
                                                     <div class="col-12 text-center my-2">
                                                         <button #btngetreaderlist
                                                             class="w-100 btn btn-info btn-lg text-white fw-bold"
@@ -241,6 +188,9 @@
                                 </main>
 
                             </div>
+                        </div>
+                        <div class="card-footer">
+                            status <label #readerNameStatus class="form-check-label"></label>
                         </div>
                     </div>
                 </div>

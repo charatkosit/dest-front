@@ -278,7 +278,8 @@ setDataToForm(idCardData: ExtractData){
       address: '',
       idCard: '',
       token: '',
-      destFloor: ''
+      destFloor: '',
+   
 
 
     };

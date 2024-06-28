@@ -1,4 +1,7 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { WebsocketService } from 'src/app/services/websocket.service';
 
 @Component({
@@ -13,31 +16,14 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
   @ViewChild('readingTime') readingTime!: ElementRef;
   @ViewChild('photo') photo!: ElementRef;
   @ViewChild('socketMessage') socketMessage!: ElementRef;
-
   @ViewChild('physicalAddress') physicalAddress!: ElementRef;
   @ViewChild('firstNameT') firstNameT!: ElementRef;
-
   @ViewChild('lastNameT') lastNameT!: ElementRef;
-
-
-  @ViewChild('gender') gender!: ElementRef;
-  @ViewChild('birthDate') birthDate!: ElementRef;
   @ViewChild('nidNum') nidNum!: ElementRef;
   @ViewChild('address') address!: ElementRef;
-
-
   @ViewChild('readerNameStatus') readerNameStatus!: ElementRef;
   @ViewChild('ledCardStatus') ledCardStatus!: ElementRef;
   @ViewChild('cardStatus') cardStatus!: ElementRef;
-  @ViewChild('chkAutoRead') chkAutoRead!: ElementRef;
-  @ViewChild('chkAutoNIDNumber') chkAutoNIDNumber!: ElementRef;
-  @ViewChild('chkAutoNIDText') chkAutoNIDText!: ElementRef;
-  @ViewChild('chkAutoAText') chkAutoAText!: ElementRef;
-  @ViewChild('chkAutoNIDPhoto') chkAutoNIDPhoto!: ElementRef;
-  @ViewChild('chkNIDNumber') chkNIDNumber!: ElementRef;
-  @ViewChild('chkNIDText') chkNIDText!: ElementRef;
-  @ViewChild('chkAText') chkAText!: ElementRef;
-  @ViewChild('chkNIDPhoto') chkNIDPhoto!: ElementRef;
   @ViewChild('listReadername') listReadername!: ElementRef;
   @ViewChild('btngetreaderlist') btngetreaderlist!: ElementRef;
 
@@ -56,13 +42,53 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
   middleNameE!: string; // ชื่อกลางอังกฤษ
   firstNameE!: string;  // ชื่ออังกฤษ
   lastNameE!: string;  // นามสกุลอังกฤษ
+  gender!: string; // เพศ
+  birthDate!: string; // วันเกิด
+
+  // ส่วนของการตั้งค่าอ่านบัตร แบบ Manual
+  chkNIDNumber: boolean = false;   //เอาเลขบัตร
+  chkNIDText: boolean = true;     //เอาข้อความทั้งหมด รวมเลขบัตร
+  chkAText: boolean = false;   //เอาข้อความ ส่วนเพิ่มเติม
+  chkNIDPhoto: boolean = true;     //เอารูปภาพ
+
+  // ส่วนของการตั้งค่าอ่านบัตร แบบ Auto
+  chkAutoRead: boolean = true;       //กำนหดให้อ่านอัตโนมัติ
+  chkAutoNIDNumber: boolean = false;  //เอาเลขบัตร
+  chkAutoNIDText: boolean = true;    //เอาข้อความทั้งหมด รวมเลขบัตร
+  chkAutoAText: boolean = false;      //เอาข้อความ ส่วนเพิ่มเติม
+  chkAutoNIDPhoto: boolean = true;   //เอารูปภาพ
 
   private intendPresent_flag = true;
   private debugFlag = true;
   private readingTimeMs = 0;
   private then: Date | null = null;
 
-  constructor(private websocketService: WebsocketService) { }
+
+  visitorForm!: FormGroup;
+
+
+
+  constructor(
+    private websocketService: WebsocketService,
+    private router: Router,
+    private http: HttpClient,
+    private fb: FormBuilder
+
+  ) {
+    this.visitorForm = this.fb.group({
+      firstName: [''],
+      lastName: [''],
+      address:[''],
+      phone: ['', Validators.required],
+      idCard: [''],
+      bussiness: [''],
+      token: ['', Validators.required],
+      destFloor: ['', Validators.required]
+
+    })
+
+  
+  }
 
   ngOnInit() {
     this.websocketService.connect("ws://localhost:14820/TDKWAgent");
@@ -73,6 +99,11 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
     this.websocketService.closeConnection();
   }
 
+  ngAfterViewInit() {
+    // Manually update the form control value
+
+
+  }
   wSocketSend(jsonStr: string) {
     this.websocketService.sendMessage(jsonStr);
   }
@@ -84,11 +115,11 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
   }
 
   setAutoReadOptions() {
-    const cmdNIDAutoRead = this.chkAutoRead.nativeElement.checked;
-    const cmdIDNumber = this.chkAutoNIDNumber.nativeElement.checked;
-    const cmdText = this.chkAutoNIDText.nativeElement.checked;
-    const cmdATaxt = this.chkAutoAText.nativeElement.checked;
-    const cmdphoto = this.chkAutoNIDPhoto.nativeElement.checked;
+    const cmdNIDAutoRead = this.chkAutoRead;
+    const cmdIDNumber = this.chkAutoNIDNumber;
+    const cmdText = this.chkAutoNIDText;
+    const cmdATaxt = this.chkAutoAText;
+    const cmdphoto = this.chkAutoNIDPhoto;
     this.disabledButton(cmdNIDAutoRead);
 
     const JS_OBJ = {
@@ -126,10 +157,10 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
   readNIDCard() {
     this.clearScreen();
     this.selectReader();
-    const cmdIDNumber = this.chkNIDNumber.nativeElement.checked;
-    const cmdText = this.chkNIDText.nativeElement.checked;
-    const cmdAText = this.chkAText.nativeElement.checked;
-    const cmdphoto = this.chkNIDPhoto.nativeElement.checked;
+    const cmdIDNumber = this.chkNIDNumber;
+    const cmdText = this.chkNIDText;
+    const cmdAText = this.chkAText;
+    const cmdphoto = this.chkNIDPhoto;
 
     const JS_OBJ = {
       Command: "ReadIDCard",
@@ -222,10 +253,10 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
         this.firstNameE = NIDData[5] + " " + NIDData[6];
         this.middleNameE = NIDData[7];
         this.lastNameE = NIDData[8];
-        if (NIDData[17] == "1") this.gender.nativeElement.value = "Male";
-        else if (NIDData[17] == "2") this.gender.nativeElement.value = "Female";
-        else this.gender.nativeElement.value = NIDData[17];
-        this.birthDate.nativeElement.value = this.add_slash(NIDData[18]);
+        if (NIDData[17] == "1") this.gender = "Male";
+        else if (NIDData[17] == "2") this.gender = "Female";
+        else this.gender = NIDData[17];
+        this.birthDate = this.add_slash(NIDData[18]);
         this.address.nativeElement.value = `${NIDData[9]} ${NIDData[10]} ${NIDData[11]} ${NIDData[12]} ${NIDData[13]}\r\n${NIDData[14]} ${NIDData[15]} ${NIDData[16]}`;
         this.issueDate = this.add_slash(NIDData[20]);
         this.expireDate = this.add_slash(NIDData[21]);
@@ -243,10 +274,10 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
         this.firstNameE = NIDData[5] + " " + NIDData[6];
         this.middleNameE = NIDData[7];
         this.lastNameE = NIDData[8];
-        if (NIDData[17] == "1") this.gender.nativeElement.value = "Male";
-        else if (NIDData[17] == "2") this.gender.nativeElement.value = "Female";
-        else this.gender.nativeElement.value = NIDData[17];
-        this.birthDate.nativeElement.value = this.add_slash(NIDData[18]);
+        if (NIDData[17] == "1") this.gender = "Male";
+        else if (NIDData[17] == "2") this.gender = "Female";
+        else this.gender = NIDData[17];
+        this.birthDate = this.add_slash(NIDData[18]);
         this.address.nativeElement.value = `${NIDData[9]} ${NIDData[10]} ${NIDData[11]} ${NIDData[12]} ${NIDData[13]}\r\n${NIDData[14]} ${NIDData[15]} ${NIDData[16]}`;
         this.issueDate = this.add_slash(NIDData[20]);
         this.expireDate = this.add_slash(NIDData[21]);
@@ -293,7 +324,8 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
       if (this.debugFlag) {
         console.log("Read error");
       }
-      alert("ERROR Code :" + status);
+      alert("ERROR Code 320 :" + status);
+      
     }
   }
 
@@ -305,8 +337,8 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
     this.firstNameE = "";
     this.middleNameE = "";
     this.lastNameE = "";
-    this.birthDate.nativeElement.value = "";
-    this.gender.nativeElement.value = "";
+    this.birthDate = "";
+    this.gender = "";
     this.address.nativeElement.value = "";
     this.issueDate = "";
     this.expireDate = "";
@@ -321,20 +353,21 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
     this.myBar.nativeElement.style.width = "0%";
     this.lbBar.nativeElement.innerHTML = "0%";
     this.readingTime.nativeElement.innerHTML = "";
+   
   }
 
   disabledButton(disabled: boolean) {
-    this.chkAutoNIDNumber.nativeElement.disabled = !disabled;
-    this.chkAutoAText.nativeElement.disabled = !disabled;
-    this.chkAutoNIDText.nativeElement.disabled = !disabled;
-    this.chkAutoNIDPhoto.nativeElement.disabled = !disabled;
+    this.chkAutoNIDNumber = !disabled;
+    this.chkAutoAText = !disabled;
+    this.chkAutoNIDText = !disabled;
+    this.chkAutoNIDPhoto = !disabled;
   }
 
   disableReadbtn(disabled: boolean) {
-    this.chkNIDNumber.nativeElement.disabled = disabled;
-    this.chkAText.nativeElement.disabled = disabled;
-    this.chkNIDText.nativeElement.disabled = disabled;
-    this.chkNIDPhoto.nativeElement.disabled = disabled;
+    this.chkNIDNumber = disabled;
+    this.chkAText = disabled;
+    this.chkNIDText = disabled;
+    this.chkNIDPhoto = disabled;
 
     this.btngetreaderlist.nativeElement.disabled = disabled;
     this.listReadername.nativeElement.disabled = disabled;
@@ -359,7 +392,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
         this.socketMessage.nativeElement.innerHTML = "Agent: " + msgObj.AgentInfo;
         this.socketMessage.nativeElement.style.color = "blue";
       } else {
-        alert("ERROR Code :" + msgObj.Status);
+        alert("ERROR Code 386 :" + msgObj.Status);
       }
     }
 
@@ -378,7 +411,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
       }
 
       if (msgObj.Status == -1004) {
-        alert("ERROR Code :" + msgObj.Status);
+        alert("ERROR Code 405 :" + msgObj.Status);
         return;
       } else if (msgObj.Status == 1) {
         this.resetTimer();
@@ -390,7 +423,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
         this.readerNameStatus.nativeElement.innerHTML = msgObj.ReaderName;
 
         this.cardStatus.nativeElement.style.color = "limegreen";
-        this.cardStatus.nativeElement.innerHTML = "Card Status: Present";
+        this.cardStatus.nativeElement.innerHTML = "Card Status: อ่านบัตรแล้ว";
         this.ledCardStatus.nativeElement.style.backgroundColor = "limegreen";
       } else if (msgObj.Status == -16) {
         this.intendPresent_flag = true;
@@ -399,7 +432,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
 
         //-------
         this.cardStatus.nativeElement.style.color = "red";
-        this.cardStatus.nativeElement.innerHTML = "Card Status: Absent";
+        this.cardStatus.nativeElement.innerHTML = "Card Status:  ไม่ได้เสียบบัตร";
         this.ledCardStatus.nativeElement.style.backgroundColor = "red";
       } else if (msgObj.Status == 0) {
         this.cardStatus.nativeElement.style.color = "orange";
@@ -409,7 +442,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
         this.readerNameStatus.nativeElement.style.color = "orange";
         this.readerNameStatus.nativeElement.innerHTML = msgObj.ReaderName;
       } else {
-        alert("ERROR Code :" + msgObj.Status);
+        alert("ERROR Code 436:" + msgObj.Status);
       }
       msgObj.ReaderName = "";
     }
@@ -454,10 +487,10 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
           while (readerList.options.length) {
             readerList.remove(0);
           }
-          const txtReaderName = new Option("Reader not found", "0");
+          const txtReaderName = new Option("ไม่พบเครื่องอ่านบัตร1", "0");
           readerList.options.add(txtReaderName);
         } else {
-          alert("ERROR Code :" + msgObj.Status);
+          alert("ERROR Code 484:" + msgObj.Status);
         }
       }
     }
@@ -481,7 +514,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
           const txtReaderName = new Option("Reader not found", "0");
           readerList.options.add(txtReaderName);
         }
-        alert("ERROR Code :" + msgObj.Status);
+        alert("ERROR Code 508 :" + msgObj.Status);
       }
     }
 
@@ -499,7 +532,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
         });
         alert(txtResult);
       } else {
-        alert("ERROR Code :" + msgObj.Status);
+        alert("ERROR Code 526:" + msgObj.Status);
       }
     }
 
@@ -507,7 +540,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
       if (msgObj.Status == 0) {
         alert(msgObj.LicenseInfo);
       } else {
-        alert("ERROR Code :" + msgObj.Status);
+        alert("ERROR Code 534:" + msgObj.Status);
       }
     }
 
@@ -525,32 +558,74 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
       } else if (msgObj.Status >= 100 && msgObj.Status < 104) {
         alert("The latest license file has already been installed. (" + msgObj.Status + ")");
       } else {
-        alert("ERROR Code :" + msgObj.Status);
+        alert("ERROR Code 552 :" + msgObj.Status);
       }
     }
 
     if (msgObj.Message == "GetAutoReadOptionsR") {
       if (msgObj.Status == 0) {
-        this.chkAutoRead.nativeElement.checked = msgObj.AutoRead;
-        this.chkAutoNIDNumber.nativeElement.checked = msgObj.IDNumberRead;
-        this.chkAutoNIDText.nativeElement.checked = msgObj.IDTextRead;
-        this.chkAutoAText.nativeElement.checked = msgObj.IDATextRead;
-        this.chkAutoNIDPhoto.nativeElement.checked = msgObj.IDPhotoRead;
+        this.chkAutoRead = msgObj.AutoRead;
+        this.chkAutoNIDNumber = msgObj.IDNumberRead;
+        this.chkAutoNIDText = msgObj.IDTextRead;
+        this.chkAutoAText = msgObj.IDATextRead;
+        this.chkAutoNIDPhoto = msgObj.IDPhotoRead;
       } else {
-        alert("ERROR Code :" + msgObj.Status);
+        alert("ERROR Code 564:" + msgObj.Status);
       }
     }
 
     if (msgObj.Message == "SetAutoReadOptionsR") {
       if (msgObj.Status == 0) {
-        this.chkAutoRead.nativeElement.checked = msgObj.AutoRead;
-        this.chkAutoNIDNumber.nativeElement.checked = msgObj.IDNumberRead;
-        this.chkAutoNIDText.nativeElement.checked = msgObj.IDTextRead;
-        this.chkAutoAText.nativeElement.checked = msgObj.IDATextRead;
-        this.chkAutoNIDPhoto.nativeElement.checked = msgObj.IDPhotoRead;
+        this.chkAutoRead = msgObj.AutoRead;
+        this.chkAutoNIDNumber = msgObj.IDNumberRead;
+        this.chkAutoNIDText = msgObj.IDTextRead;
+        this.chkAutoAText = msgObj.IDATextRead;
+        this.chkAutoNIDPhoto = msgObj.IDPhotoRead;
       } else {
-        alert("ERROR Code :" + msgObj.Status);
+        alert("ERROR Code 576:" + msgObj.Status);
       }
     }
+  }
+
+
+ 
+
+  onSubmit() {
+    this.visitorForm.controls['firstName'].setValue(this.firstNameT.nativeElement.value);
+    this.visitorForm.controls['firstName'].markAsDirty(); // Mark the control as dirty
+    this.visitorForm.controls['lastName'].setValue(this.lastNameT.nativeElement.value);
+    this.visitorForm.controls['lastName'].markAsDirty(); // Mark the control as dirty
+    this.visitorForm.controls['address'].setValue(this.address.nativeElement.value);
+    this.visitorForm.controls['address'].markAsDirty(); // Mark the control as dirty
+    this.visitorForm.controls['idCard'].setValue(this.nidNum.nativeElement.value);
+    this.visitorForm.controls['idCard'].markAsDirty(); // Mark the control as dirty
+    console.log(`this.visitorForm`, this.visitorForm.value);
+    // ทำการส่งข้อมูล
+
+    const uri = '/api/visitors'
+    const data = this.visitorForm.value;
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+   
+    if (this.visitorForm.valid) {
+
+      console.log(`data visitorForm`, data)
+      // this.http.post(uri, data, { headers }).subscribe({
+      //   next: response => {
+      //     console.log(response);
+      //     this.clearScreen();
+      //   },
+      //   error: error => {
+      //     console.error(error);
+      //   }
+      // });
+    }
+
+    //
+    this.clearScreen();
+    this.visitorForm.reset();
+    alert("บันทึกข้อมูลเรียบร้อย");
+    // this.router.navigate(['/visitors/visitor-list']);
+
   }
 }
