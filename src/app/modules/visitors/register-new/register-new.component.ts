@@ -434,11 +434,11 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
 
         //-------
         this.cardStatus.nativeElement.style.color = "red";
-        this.cardStatus.nativeElement.innerHTML = "Card Status:  ไม่ได้เสียบบัตร";
+        this.cardStatus.nativeElement.innerHTML = "รอเสียบบัตร";
         this.ledCardStatus.nativeElement.style.backgroundColor = "red";
       } else if (msgObj.Status == 0) {
         this.cardStatus.nativeElement.style.color = "orange";
-        this.cardStatus.nativeElement.innerHTML = "Card Status: Unknown";
+        this.cardStatus.nativeElement.innerHTML = "ไม่พบเครื่องอ่าน";
         this.ledCardStatus.nativeElement.style.backgroundColor = "orange";
 
         this.readerNameStatus.nativeElement.style.color = "orange";
