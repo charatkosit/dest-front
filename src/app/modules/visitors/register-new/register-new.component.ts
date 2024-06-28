@@ -610,15 +610,15 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
     if (this.visitorForm.valid) {
 
       console.log(`data visitorForm`, data)
-      // this.http.post(uri, data, { headers }).subscribe({
-      //   next: response => {
-      //     console.log(response);
-      //     this.clearScreen();
-      //   },
-      //   error: error => {
-      //     console.error(error);
-      //   }
-      // });
+      this.http.post(uri, data, { headers }).subscribe({
+        next: response => {
+          console.log(response);
+          this.clearScreen();
+        },
+        error: error => {
+          console.error(error);
+        }
+      });
     }
 
     //
