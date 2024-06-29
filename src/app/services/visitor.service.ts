@@ -19,8 +19,22 @@ export class VisitorService {
     return this.http.get<any>('/api/visitors/count')
   }
 
-  checkout(id:number): Observable<any> {
-    return this.http.get<any>('/api/visitors/checkout/'+id)
+  checkout(token:string): Observable<any> {
+    const headers = { 'Content-type': 'application/json' };
+    const url = `/api/return-card/visitor`;
+    const body = {token:token,
+                  deviceNum:'900'
+                 };
+    
+    return  this.http.post<any>(url,body, { headers: headers, responseType: 'text' as 'json' });
+  }
+
+  updateVisitor(token: string): Observable<any> {
+    const headers = { 'Content-type': 'application/json' };
+    const url = `/api/visitorCard/update/${token}`;
+    const body = { occupied: false };
+   
+    return this.http.patch<any>(url, body, { 'headers': headers })
   }
 
   formatDateString(dateString: string): string {

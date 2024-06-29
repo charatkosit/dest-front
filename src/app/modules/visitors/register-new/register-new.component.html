@@ -36,20 +36,7 @@
                                 <main>
                                     <div class="row gx-5 my-1">
                                         <div class="col-lg-8">
-                                            <div id="myProgress" style="width: 100%">
-                                                <div #myBar
-                                                    style="height: 15px; background-color: rgb(10, 206, 241); font-size: 70%; text-align: right; width: 0%;">
-                                                    <label #lbBar class="TextInput"
-                                                        style="font-weight: bold; color:rgb(255, 255, 255);"></label>
-                                                </div>
-                                            </div>
-                                            <div class="row">
 
-                                                <div class="col" style="text-align: right">
-                                                    <label #readingTime class="TextInput"
-                                                        style="font-weight: bold"></label>
-                                                </div>
-                                            </div>
                                             <div class="row">
                                                 <div class="col-sm-2">
                                                     <div class="col-sm-2">
@@ -70,21 +57,35 @@
                                                     <hr class="my-2">
 
                                                     <div class="form-group col-sm-4">
-                                                        <label for="firstName_T" class="form-label my-0">ชื่อ</label>
+                                                        <label for="firstName_T" class="form-label my-0">*ชื่อ</label>
                                                         <input #firstNameT type="text" class="form-control"
+                                                            [ngClass]="{'is-invalid': isFieldInvalid('firstName')}"
                                                             id="firstName" formControlName="firstName">
+                                                        <div *ngIf="isFieldInvalid('firstName')"
+                                                            class="invalid-feedback">
+                                                            กรุณาใส่ชื่อ
+                                                        </div>
                                                     </div>
 
                                                     <div class="form-group col-sm-4">
-                                                        <label for="lastName_T" class="form-label my-0">นามสกุล</label>
+                                                        <label for="lastName_T" class="form-label my-0">*นามสกุล</label>
                                                         <input #lastNameT type="text" class="form-control"
+                                                            [ngClass]="{'is-invalid': isFieldInvalid('lastName')}"
                                                             formControlName="lastName">
+                                                        <div *ngIf="isFieldInvalid('lastName')"
+                                                            class="invalid-feedback">
+                                                            กรุณาใส่ นามสกุล
+                                                        </div>
                                                     </div>
 
                                                     <div class="form-group col-sm-4">
                                                         <label for="nidnum" class="form-label my-0">บัตรประชาชน</label>
                                                         <input #nidNum type="text" class="form-control"
+                                                            [ngClass]="{'is-invalid': isFieldInvalid('idCard')}"
                                                             formControlName="idCard">
+                                                        <div *ngIf="isFieldInvalid('idCard')" class="invalid-feedback">
+                                                            ID Card must be a 13-digit number.
+                                                        </div>
                                                     </div>
 
 
@@ -117,9 +118,14 @@
 
                                                         <div class="form-group col-sm-4">
                                                             <label for="destFloor"
-                                                                class="form-label my-0">ติดต่อชั้น</label>
-                                                            <input type="text" class="form-control"
-                                                                formControlName="destFloor" >
+                                                                class="form-label my-0">*ติดต่อชั้น</label>
+                                                            <input type="number" class="form-control"
+                                                                [ngClass]="{'is-invalid': isFieldInvalid('destFloor')}"
+                                                                formControlName="destFloor">
+                                                            <div *ngIf="isFieldInvalid('destFloor')"
+                                                                class="invalid-feedback">
+                                                                เลือกชั้นในช่วง ชั้น4 ถึง ขั้น32.
+                                                            </div>
                                                         </div>
 
                                                         <div class="form-group col-sm-4">
@@ -131,31 +137,46 @@
 
                                                         <div class="form-group col-sm-4">
                                                             <label for="token"
-                                                                class="form-label my-0">บัตรอนุญาติ</label>
+                                                                class="form-label my-0">*บัตรอนุญาติ</label>
                                                             <input type="text" class="form-control"
-                                                                formControlName="token" >
+                                                                [ngClass]="{'is-invalid': !validToken}"
+                                                                formControlName="token">
+                                                                <div *ngIf="!validToken" class="invalid-feedback">
+                                                                    บัตรอนุญาติไม่ถูกต้อง
+                                                                </div>
+                                                        </div>
+                                                     
+                                                    </div>
+
+
+
+
+                                                    <div class="row">
+                                                        <div class="form-group col-sm-4">
+                                                            <button class="btn btn-primary btn-block" type="submit"
+                                                                [disabled]="visitorForm.invalid">บันทึก</button>
+                                                        </div>
+
+                                                        <div class="form-group col-sm-4">
+                                                            <button class="btn btn-warning btn-block" type="reset"
+                                                                (click)="clearScreen()">ล้างค่า</button>
                                                         </div>
                                                     </div>
-
-                                                
-
-                                                <div class="row">
-                                                    <div class="form-group col-sm-4">
-                                                        <button class="btn btn-primary btn-block" type="submit"
-                                                            [disabled]="visitorForm.invalid">บันทึก</button>
-                                                    </div>
-
-                                                    <div class="form-group col-sm-4">
-                                                        <button class="btn btn-warning btn-block" type="reset"
-                                                            (click)="clearScreen()">ล้างค่า</button>
-                                                    </div>
                                                 </div>
-                                            </div>
                                             </form>
                                         </div>
                                         <div class="col-md-5 col-lg-4 order-md-last">
+                                            <div id="myProgress" style="width: 80%">
+                                                <div #myBar
+                                                    style="height: 15px; background-color: rgb(10, 206, 241); font-size: 70%; text-align: right; width: 0%;">
+                                                    <label #lbBar class="TextInput"
+                                                        style="font-weight: bold; color:rgb(255, 255, 255);"></label>
+                                                </div>
+                                                <div class="col" style="text-align: right">
+                                                    <label #readingTime class="TextInput"></label>
+                                                </div>
+                                            </div>
 
-                                           
                                         </div>
                                     </div>
                                 </main>
@@ -165,6 +186,7 @@
                         <div class="card-footer">
                             status <label #readerNameStatus class="form-check-label"></label>
                             <span class="text text-warning" #cardStatus>ไม่พบเครื่องอ่าน </span>
+
                         </div>
                     </div>
                 </div>

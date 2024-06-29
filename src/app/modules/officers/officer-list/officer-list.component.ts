@@ -35,74 +35,79 @@ export class OfficerListComponent implements OnInit {
     private router: Router,) { }
 
   ngOnInit(): void {
-    this.officerService.getData().subscribe(data => {
-      this.data = data;
-      console.log(data)
-
-      $(document).ready(() => {
-        var table = $('#example1').DataTable({
-          language: {
-            lengthMenu: 'แสดง _MENU_ แถว',
-            zeroRecords: 'ไม่พบข้อมูล',
-            info: 'แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว',
-            infoEmpty: 'ไม่มีข้อมูลที่ต้องการแสดง',
-            infoFiltered: '(กรองจากทั้งหมด _MAX_ แถว)',
-            search: 'ค้นหา:',
-            paginate: {
-              first: 'หน้าแรก',
-              last: 'หน้าสุดท้าย',
-              next: 'ถัดไป',
-              previous: 'ก่อนหน้า'
-            }
-          },
-          stateSave: true,
-          data: this.data,
-          columns: [
-            { data: 'firstName', title: 'ชื่อ', className: "left-center" },
-            { data: 'lastName', title: 'นามสกุล', className: "left-center" },
-            { data: 'phone', title: 'โทรศัพท์', className: "left-center" },
-            { data: 'idOfficer', title: 'บัตรพนักงาน', className: "left-center" },
-            { data: 'token', title: 'หมายเลขบัตรอนุญาต', className: "left-center" },
-            {
-              data: 'multiSelectFloor', title: 'ติดต่อชั้น', className: "left-center",
-              render: function (data: any, type: any, row: any) {
-                return data === '[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32]' ? data = 'ไปได้ทุกชั้น' : data;
-              }
-            },
-            {
-              title: 'แก้ไข',
-              className: 'text-center',
-              data: null,
-              render: function (data: any, type: any, row: any) {
-                return `<button class="btn btn-info btn-edit" data-id="${row.id}">แก้ไข</button>
-                 <button class="btn btn-danger btn-delete" data-id="${row.id}">ลบ</button>`;
-              }
-            },
-          ]
-        });
-
-
-        $(document).on('click', '.btn-edit', () => {
-          var editData = table.row($(event?.target).parents('tr')).data();
-          var id = $(event?.target).data('id');
-
-          console.log(`when edit click: ${id} ,${JSON.stringify(editData)}`);
-          this.onEdit(id,editData);
-
-        });
-
-        $(document).on('click', '.btn-delete', () => {
-          var id = $(event?.target).data('id');
-          console.log(`when delete click: ${id}`);
-          this.onDelete(id);
-        });
-
-
-      });
-    })
+    this.loadData();
+    this.initializeDataTable();
   }
 
-  onEdit(id:number,editData: EditData): void {
+  loadData(): void {
+    this.officerService.getData().subscribe(data => {
+      this.data = data;
+      const table = $('#example1').DataTable();
+      table.clear();
+      table.rows.add(this.data);
+      table.draw();
+    });
+  }
+
+  initializeDataTable(): void {
+    $(document).ready(() => {
+      var table = $('#example1').DataTable({
+        language: {
+          lengthMenu: 'แสดง _MENU_ แถว',
+          zeroRecords: 'ไม่พบข้อมูล',
+          info: 'แสดง _START_ ถึง _END_ จาก _TOTAL_ แถว',
+          infoEmpty: 'ไม่มีข้อมูลที่ต้องการแสดง',
+          infoFiltered: '(กรองจากทั้งหมด _MAX_ แถว)',
+          search: 'ค้นหา:',
+          paginate: {
+            first: 'หน้าแรก',
+            last: 'หน้าสุดท้าย',
+            next: 'ถัดไป',
+            previous: 'ก่อนหน้า'
+          }
+        },
+        stateSave: true,
+        data: this.data,
+        columns: [
+          { data: 'firstName', title: 'ชื่อ', className: "left-center" },
+          { data: 'lastName', title: 'นามสกุล', className: "left-center" },
+          { data: 'phone', title: 'โทรศัพท์', className: "left-center" },
+          { data: 'idOfficer', title: 'บัตรพนักงาน', className: "left-center" },
+          { data: 'token', title: 'หมายเลขบัตรอนุญาต', className: "left-center" },
+          {
+            data: 'multiSelectFloor', title: 'ติดต่อชั้น', className: "left-center",
+            render: function (data: any, type: any, row: any) {
+              return data === '[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32]' ? 'ไปได้ทุกชั้น' : data;
+            }
+          },
+          {
+            title: 'แก้ไข',
+            className: 'text-center',
+            data: null,
+            render: function (data: any, type: any, row: any) {
+              return `<button class="btn btn-info btn-edit" data-id="${row.id}">แก้ไข</button>
+                 <button class="btn btn-danger btn-delete" data-id="${row.id}">ลบ</button>`;
+            }
+          },
+        ]
+      });
+
+      $(document).on('click', '.btn-edit', (event: any) => {
+        var editData = table.row($(event.target).parents('tr')).data();
+        var id = $(event.target).data('id');
+        console.log(`when edit click: ${id}, ${JSON.stringify(editData)}`);
+        this.onEdit(id, editData);
+      });
+
+      $(document).on('click', '.btn-delete', (event: any) => {
+        var id = $(event.target).data('id');
+        console.log(`when delete click: ${id}`);
+        this.onDelete(id);
+      });
+    });
+  }
+
+  onEdit(id: number, editData: EditData): void {
     console.log(`onEdit: ${JSON.stringify(editData)}`);
     // Add your logic for the edit action here
     const modalRef = this.modalService.open(OfficeEditComponent);

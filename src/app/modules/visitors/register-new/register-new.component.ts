@@ -66,8 +66,8 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
 
 
   visitorForm!: FormGroup;
-  numOnCard!: string;
-
+  token!: string;
+validToken: boolean = true;
 
 
   constructor(
@@ -78,16 +78,17 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
 
   ) {
     this.visitorForm = this.fb.group({
-      firstName: [''],
-      lastName: [''],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
       address: [''],
-      phone: ['', Validators.required],
+      phone: [''],
       idCard: [''],
       bussiness: [''],
       token: ['', Validators.required],
-      destFloor: ['', Validators.required],
+      destFloor: ['', [Validators.required, Validators.min(4), Validators.max(32)]],
       photoIDcard: [''],
-      photoWebCam: ['']
+      photoWebCam: [''],
+      // validToken: ['', Validators.required],
 
     })
 
@@ -100,11 +101,14 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
     this.websocketService.messages$.subscribe(message => this.onGetMessage(message));
 
     this.visitorForm.get('token')?.valueChanges.pipe(
-      debounceTime(300),
+      debounceTime(500),
 
     ).subscribe({
       next: (value) => {
         console.log(`value`, value);
+        if(this.token === value){
+          this.validToken = true;
+        }
         this.changeNumToToken(value);
       }
     });
@@ -112,17 +116,25 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
 
 
   changeNumToToken(numOnCard: string) {
-    this.numOnCard = numOnCard;
+    this.token  = numOnCard;
     const uri = `/api/visitorCard/findToken/${numOnCard}`;
     this.http.get<any[]>(uri).subscribe({
       next: response => {
-        if (response) {
-           console.log(`newToken`, response[0].token);
-           this.visitorForm.controls['token'].setValue(response[0].token);
-        }
+        if (response.length > 0) {
+          console.log(`response`, response);
+          console.log(`newToken`, response[0].token);
+          this.visitorForm.controls['token'].setValue(response[0].token);
+          if(response[0].occupied){
+            this.validToken = false;
+          }else{
+            this.validToken = true;
+          }
+        } 
+        console.log(`validToken`, this.validToken);
       },
       error: error => {
         console.error(error);
+
       }
     });
 
@@ -130,7 +142,8 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
 
   updateOccupiedVisitorCard(token: string) {
     const uri = `/api/visitorCard/update/${token}`;
-    this.http.patch(uri, { occupied : true}).subscribe({
+    console.log(`updateOccupiedVisitorCard uri`, uri);
+    this.http.patch(uri, { occupied: true }).subscribe({
       next: response => {
         console.log(response);
       },
@@ -142,7 +155,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
 
   updateFreeVisitorCard(numOnCard: string) {
     const uri = `/api/visitorCard/update/${numOnCard}`;
-    this.http.patch(uri, { occupied : false}).subscribe({
+    this.http.patch(uri, { occupied: false }).subscribe({
       next: response => {
         console.log(response);
       },
@@ -151,6 +164,12 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  isFieldInvalid(field: string): boolean {
+    return !(this.visitorForm?.get(field)?.valid ?? false) && (this.visitorForm?.get(field)?.touched ?? false);
+  }
+
+
 
   ngOnDestroy() {
     this.websocketService.closeConnection();
@@ -376,6 +395,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
       }
       if (this.debugFlag) {
         console.log("Reading is finished");
+        this.updateDataToForm();
       }
     } else {
       if (this.debugFlag) {
@@ -644,10 +664,7 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
-
-  onSubmit() {
+  updateDataToForm() {
     this.visitorForm.controls['firstName'].setValue(this.firstNameT.nativeElement.value.trim());
     this.visitorForm.controls['firstName'].markAsDirty(); // Mark the control as dirty
     this.visitorForm.controls['lastName'].setValue(this.lastNameT.nativeElement.value.trim());
@@ -657,35 +674,33 @@ export class RegisterNewComponent implements OnInit, OnDestroy {
     this.visitorForm.controls['idCard'].setValue(this.nidNum.nativeElement.value.trim());
     this.visitorForm.controls['idCard'].markAsDirty(); // Mark the control as dirty
     console.log(`this.visitorForm`, this.visitorForm.value);
-    // ทำการส่งข้อมูล
+  }
 
-    const uri = '/api/visitors'
-    const data = this.visitorForm.value;
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
+  onSubmit() {
+
     if (this.visitorForm.valid) {
+      const uri = '/api/visitors'
+      const data = this.visitorForm.value;
+      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
       console.log(`data visitorForm: ${JSON.stringify(data)}`)
       this.http.post(uri, data, { headers }).subscribe({
         next: response => {
           console.log(response);
+
+          // update บัตรถูกใช้งานแล้ว
+          console.log(`this.token`, this.token);
+          this.updateOccupiedVisitorCard( this.token);
           this.clearScreen();
+          this.visitorForm.reset();
+          alert("บันทึกข้อมูลเรียบร้อย");
         },
         error: error => {
           console.error(error);
         }
       });
+
     }
-
-    // update บัตรถูกใช้งานแล้ว
-    this.updateOccupiedVisitorCard(this.numOnCard);
-
-
-
-
-    //
-    this.clearScreen();
-    this.visitorForm.reset();
-    alert("บันทึกข้อมูลเรียบร้อย");
-    // this.router.navigate(['/visitors/visitor-list']);
-
   }
 }
