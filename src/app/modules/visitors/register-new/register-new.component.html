@@ -115,7 +115,24 @@
                                                     <hr class="my-2">
 
                                                     <div class="row">
+                                                        <div class="form-group col-sm-4">
+                                                            <label for="token"
+                                                                class="form-label my-0">*บัตรอนุญาติ</label>
+                                                            <input type="text" class="form-control"
+                                                                [ngClass]="{'is-invalid': !validToken}"
+                                                                formControlName="token">
+                                                            <div *ngIf="!validToken" class="invalid-feedback">
+                                                                บัตรอนุญาติไม่ถูกต้อง
+                                                            </div>
+                                                        </div>
 
+                                                        <div class="form-group col-sm-4">
+                                                            <label for="bussiness"
+                                                                class="form-label my-0">ติดต่อธุระ</label>
+                                                            <input type="text" class="form-control"
+                                                                formControlName="bussiness">
+                                                        </div>
+                                                        
                                                         <div class="form-group col-sm-4">
                                                             <label for="destFloor"
                                                                 class="form-label my-0">*ติดต่อชั้น</label>
@@ -127,25 +144,6 @@
                                                                 เลือกชั้นในช่วง ชั้น4 ถึง ขั้น32.
                                                             </div>
                                                         </div>
-
-                                                        <div class="form-group col-sm-4">
-                                                            <label for="bussiness"
-                                                                class="form-label my-0">ติดต่อธุระ</label>
-                                                            <input type="text" class="form-control"
-                                                                formControlName="bussiness">
-                                                        </div>
-
-                                                        <div class="form-group col-sm-4">
-                                                            <label for="token"
-                                                                class="form-label my-0">*บัตรอนุญาติ</label>
-                                                            <input type="text" class="form-control"
-                                                                [ngClass]="{'is-invalid': !validToken}"
-                                                                formControlName="token">
-                                                                <div *ngIf="!validToken" class="invalid-feedback">
-                                                                    บัตรอนุญาติไม่ถูกต้อง
-                                                                </div>
-                                                        </div>
-                                                     
                                                     </div>
 
 
